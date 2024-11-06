@@ -1,4 +1,4 @@
-import { createUser, getUser } from './auth.service.js';
+import { createUser, findUserById, getUser } from './auth.service.js';
 
 const registerUser = async (req, res, next) => {
   try {
@@ -20,9 +20,7 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
   try {
-    const { user, token } = await getUser(req.body);
-
-    const { password, ...userData } = user;
+    const { userData, token } = await getUser(req.body);
 
     res.status(200).send({
       message: 'User logged in successfully',
@@ -38,10 +36,17 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-const getAuthenticatedUser = async (req, res) => {
-  res.json({
-    message: 'Me',
-  });
+const getAuthenticatedUser = async (req, res, next) => {
+  try {
+    const user = await findUserById(req.user.id);
+
+    res.json({
+      message: `Welcome ${user.username}!`,
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export { registerUser, loginUser, getAuthenticatedUser };

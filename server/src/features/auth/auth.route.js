@@ -8,6 +8,7 @@ import {
   validateLogin,
   validateRegister,
 } from '../../middlewares/validateAuth.js';
+import { authenticateJWT } from '../../middlewares/verifyToken.js';
 
 const router = Router();
 
@@ -15,6 +16,6 @@ router.post('/register', validateRegister, registerUser);
 
 router.post('/login', validateLogin, loginUser);
 
-router.get('/me', getAuthenticatedUser);
+router.get('/me', authenticateJWT ,getAuthenticatedUser);
 
 export default router;

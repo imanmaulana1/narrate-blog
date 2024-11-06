@@ -1,6 +1,18 @@
 import prisma from '../../config/database.js';
 import { DatabaseError } from '../../utils/error.js';
 
+const getUserById = async (id) => {
+  try {
+    return await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to get user');
+  }
+};
+
 const getUserByEmail = async (email) => {
   try {
     return await prisma.user.findUnique({
@@ -40,4 +52,4 @@ const insertUser = async ({ name, username, email, password }) => {
   }
 };
 
-export { getUserByEmail, getUserByUsername, insertUser };
+export { getUserById, getUserByEmail, getUserByUsername, insertUser };
