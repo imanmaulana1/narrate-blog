@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  username   String   @unique
+  email      String   @unique
+  password   String
+  name       String?
+  bio        String?
+  avatar     String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  posts Post[]
+  comments Comment[]
+  likes PostLike[]
+
+  @@map("users")
+}
+
+model Post {
+  id         String   @id @default(uuid())
+  title      String
+  content       String
+  image      String?
+  author_id  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  comments Comment[]
+  categoryPosts CategoryPost[]
+  likes PostLike[]
+  
+
+  author User @relation(fields: [author_id], references: [id])
+
+  @@map("posts")
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  content    String
+  author_id  String
+  post_id    String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  author User @relation(fields: [author_id], references: [id])
+  post   Post  @relation(fields: [post_id], references: [id])
+
+  @@map("comments")
+}
+
+model Category {
+  id         String   @id @default(uuid())
+  name       String
+  slug       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  categoryPosts CategoryPost[]
+
+  @@map("categories")
+}
+
+model CategoryPost {
+  id         String   @id @default(uuid())
+  category_id String
+  post_id    String
+  created_at DateTime @default(now())
+
+  category Category @relation(fields: [category_id], references: [id])
+  post     Post     @relation(fields: [post_id], references: [id])
+}
+
+model PostLike {
+  id         String   @id @default(uuid())
+  post_id    String
+  user_id    String
+  created_at DateTime @default(now())
+
+  post Post @relation(fields: [post_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+}
