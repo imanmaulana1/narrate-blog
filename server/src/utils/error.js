@@ -6,6 +6,14 @@ export class ValidationError extends Error {
   }
 }
 
+export class UnauthorizedError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'UnauthorizedError';
+    this.statusCode = 401;
+  }
+}
+
 export class NotFoundError extends Error {
   constructor(message) {
     super(message);

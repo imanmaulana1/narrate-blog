@@ -4,13 +4,16 @@ import {
   loginUser,
   getAuthenticatedUser,
 } from './auth.controller.js';
-import { validateRegister } from '../../middlewares/validateAuth.js';
+import {
+  validateLogin,
+  validateRegister,
+} from '../../middlewares/validateAuth.js';
 
 const router = Router();
 
 router.post('/register', validateRegister, registerUser);
 
-router.post('/login', loginUser);
+router.post('/login', validateLogin, loginUser);
 
 router.get('/me', getAuthenticatedUser);
 

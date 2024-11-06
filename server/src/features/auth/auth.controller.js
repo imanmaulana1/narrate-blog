@@ -1,7 +1,6 @@
-import { DatabaseError, ValidationError } from '../../utils/error.js';
-import { createUser } from './auth.service.js';
+import { createUser, getUser } from './auth.service.js';
 
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   try {
     const user = await createUser(req.body);
 
@@ -15,27 +14,28 @@ const registerUser = async (req, res) => {
       },
     });
   } catch (error) {
-    if (error instanceof ValidationError)
-      return res.status(error.statusCode).send({
-        message: error.message,
-      });
-
-    if (error instanceof DatabaseError)
-      return res.status(error.statusCode).send({
-        message: error.message,
-      });
-
-    res.status(500).send({
-      message: 'An unexpected error occurred',
-      error: error.message,
-    });
+    next(error);
   }
 };
 
-const loginUser = async (req, res) => {
-  res.json({
-    message: 'Login',
-  });
+const loginUser = async (req, res, next) => {
+  try {
+    const { user, token } = await getUser(req.body);
+
+    const { password, ...userData } = user;
+
+    res.status(200).send({
+      message: 'User logged in successfully',
+      data: userData,
+      token: {
+        access_token: token,
+        token_type: 'Bearer',
+        expires_in: process.env.JWT_EXPIRES_IN,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getAuthenticatedUser = async (req, res) => {
