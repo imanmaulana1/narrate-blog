@@ -6,9 +6,7 @@
 
 ## USER Endpoints
 
-- GET /api/users
 - GET /api/users/{id}
-- PATCH /api/users/{id} (Authorization: Bearer <token>)
 - PATCH /api/user/profile (Authorization: Bearer <token>)
 - PATCH /api/user/upload-avatar (Authorization: Bearer <token>)
 

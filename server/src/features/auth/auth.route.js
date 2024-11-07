@@ -7,7 +7,7 @@ import {
 import {
   validateLogin,
   validateRegister,
-} from '../../middlewares/validateAuth.js';
+} from '../../middlewares/validateInput.js';
 import { authenticateJWT } from '../../middlewares/verifyToken.js';
 
 const router = Router();

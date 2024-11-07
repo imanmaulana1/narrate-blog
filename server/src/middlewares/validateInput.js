@@ -30,7 +30,7 @@ const RegisterSchema = Joi.object({
   }),
 });
 
-const loginSchema = Joi.object({
+const LoginSchema = Joi.object({
   credential: Joi.alternatives()
     .try(
       Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).messages({
@@ -53,6 +53,38 @@ const loginSchema = Joi.object({
   }),
 });
 
+const UpdateProfileSchema = Joi.object({
+  name: Joi.string().min(3).messages({
+    'string.min': 'The name must be at least 3 characters long',
+  }),
+  username: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).messages({
+    'string.pattern.base':
+      'The username must be alphanumeric and between 3 and 30 characters long',
+  }),
+  email: Joi.string()
+    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+    .messages({
+      'string.email': 'The email must be a valid email',
+    }),
+  bio: Joi.string().min(3).messages({
+    'string.min': 'The bio must be at least 3 characters long',
+  }),
+});
+
+const ChangePasswordSchema = Joi.object({
+  oldPassword: Joi.string().required().messages({
+    'string.empty': 'The old password is required'
+  }),
+  newPassword: Joi.string().required().min(6).messages({
+    'string.empty': 'The new password is required',
+    'string.min': 'The new password must be at least 6 characters long',
+  }),
+  confirmPassword: Joi.string().required().valid(Joi.ref('newPassword')).messages({
+    'string.empty': 'The password confirmation is required',
+    'any.only': 'The passwords are not the same',
+  }),
+});
+
 const validateUser = (schema) => async (req, res, next) => {
   try {
     await schema.validateAsync(req.body, {
@@ -66,4 +98,6 @@ const validateUser = (schema) => async (req, res, next) => {
 };
 
 export const validateRegister = validateUser(RegisterSchema);
-export const validateLogin = validateUser(loginSchema);
+export const validateLogin = validateUser(LoginSchema);
+export const validateUpdateProfile = validateUser(UpdateProfileSchema);
+export const validateChangePassword = validateUser(ChangePasswordSchema);
