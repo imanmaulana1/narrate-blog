@@ -37,7 +37,7 @@ const getUserByUsername = async (username) => {
   }
 };
 
-const insertUser = async ({ name, username, email, password }) => {
+const insertUser = async ({ name, username, email, password, avatar }) => {
   try {
     return await prisma.user.create({
       data: {
@@ -45,6 +45,7 @@ const insertUser = async ({ name, username, email, password }) => {
         username,
         email,
         password,
+        avatar,
       },
     });
   } catch (error) {

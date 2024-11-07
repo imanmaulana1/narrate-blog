@@ -1,5 +1,6 @@
 import {
   findUserByUsername,
+  updateAvatar,
   updatePassword,
   updateUser,
 } from './user.service.js';
@@ -49,4 +50,32 @@ const changePassword = async (req, res, next) => {
   }
 };
 
-export { getDetailUser, editUser, changePassword };
+const uploadAvatar = async (req, res, next) => {
+  const { id } = req.user;
+
+  if (!req.file) {
+    return res.status(400).send({
+      message: 'No file uploaded',
+    });
+  }
+
+  const imgUrl = `${process.env.BASE_URL}/images/${req.file.filename}`;
+
+  try {
+    const data = await updateAvatar(id, imgUrl);
+
+    res.send({
+      message: 'Your profile picture has been updated successfully!',
+      data: {
+        id: data.id,
+        username: data.username,
+        avatar: data.avatar,
+        updated_at: data.updated_at,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { getDetailUser, editUser, changePassword, uploadAvatar };

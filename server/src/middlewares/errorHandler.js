@@ -46,4 +46,12 @@ export const errorHandler = (error, req, res, next) => {
       message: 'An internal server error occurred',
     });
   }
+
+  if (error.code === 'LIMIT_FILE_SIZE') {
+    return res
+      .status(400)
+      .json({ success: false, error: 'File size exceeds the 1MB limit' });
+  }
+
+  res.status(500).json({ error: 'An unexpected error occurred' });
 };

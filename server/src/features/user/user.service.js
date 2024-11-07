@@ -42,4 +42,10 @@ const updatePassword = async (id, data) => {
   return await updateUserById(id, { password: hashedPassword });
 };
 
-export { findUserByUsername, updateUser, updatePassword };
+const updateAvatar = async (id, avatar) => {
+  const user = await updateUserById(id, { avatar });
+
+  return user;
+};
+
+export { findUserByUsername, updateUser, updateAvatar, updatePassword };

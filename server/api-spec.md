@@ -8,6 +8,7 @@
 
 - GET /api/users/{id}
 - PATCH /api/user/profile (Authorization: Bearer <token>)
+- PATCH /api/user/change-password (Authorization: Bearer <token>)
 - PATCH /api/user/upload-avatar (Authorization: Bearer <token>)
 
 ## POST Endpoints

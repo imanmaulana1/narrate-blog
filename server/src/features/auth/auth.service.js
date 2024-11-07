@@ -26,7 +26,15 @@ const createUser = async (data) => {
 
   const hashedPassword = await hashPassword(data.password);
 
-  return await insertUser({ ...data, password: hashedPassword });
+  const imgUrl = `${process.env.BASE_URL}/images/default-avatar.png`;
+
+  console.log(imgUrl)
+
+  return await insertUser({
+    ...data,
+    password: hashedPassword,
+    avatar: imgUrl,
+  });
 };
 
 const getUser = async (data) => {
