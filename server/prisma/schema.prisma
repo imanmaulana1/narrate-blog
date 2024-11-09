@@ -28,18 +28,20 @@ model User {
 model Post {
   id         String   @id @default(uuid())
   title      String
+  slug       String @unique
   content       String
   image      String?
   author_id  String
+  category_id String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   comments Comment[]
-  categoryPosts CategoryPost[]
   likes PostLike[]
   
 
   author User @relation(fields: [author_id], references: [id])
+  category Category @relation(fields: [category_id], references: [id])
 
   @@map("posts")
 }
@@ -65,20 +67,12 @@ model Category {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  categoryPosts CategoryPost[]
+  posts Post[]
 
   @@map("categories")
 }
 
-model CategoryPost {
-  id         String   @id @default(uuid())
-  category_id String
-  post_id    String
-  created_at DateTime @default(now())
 
-  category Category @relation(fields: [category_id], references: [id])
-  post     Post     @relation(fields: [post_id], references: [id])
-}
 
 model PostLike {
   id         String   @id @default(uuid())
