@@ -18,12 +18,12 @@
 - POST /api/posts (Authorization: Bearer <token>) // Create a new post
 - PATCH /api/posts/{id} (Authorization: Bearer <token>) // Update a post
 - DELETE /api/posts/{id} (Authorization: Bearer <token>) // Delete a post
-- PATCH /api/posts/{postId}/category/{categoryId} (Authorization: Bearer <token>) // Assign or reassign a post to a category
 
 ## CATEGORY Endpoints
 
 - GET /api/category // List of all categories
 - GET /api/category/{slug} // List of posts in a category
+- PATCH /api/posts/{postId}/category/{categoryId} (Authorization: Bearer <token>) // Assign or reassign a post to a category
 
 ## COMMENT Endpoints
 

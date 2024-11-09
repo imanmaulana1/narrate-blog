@@ -1,20 +1,55 @@
-import { NotFoundError } from '../../utils/error.js';
-import { getAllPosts, getPostsBySlug } from './post.repository.js';
+import slugify from 'slugify';
+import { NotFoundError, ValidationError } from '../../utils/error.js';
+import {
+  deleteExistingPost,
+  getPostsList,
+  getPostBySlug,
+  updateExistingPost,
+} from './post.repository.js';
 
-const findPosts = async () => {
-  const posts = await getAllPosts();
+const getAllPostsService = async () => {
+  const posts = await getPostsList();
 
   return posts;
 };
 
-const findPostBySlug = async (slug) => {
-  const post = await getPostsBySlug(slug);
+const getPostBySlugService = async (slug) => {
+  const post = await getPostBySlug(slug);
 
   if (!post) {
-    throw new NotFoundError(`Sorry, we couldn't find the post you're looking for`);
+    throw new NotFoundError(
+      `Sorry, we couldn't find the post you're looking for`
+    );
   }
 
   return post;
 };
 
-export { findPosts, findPostBySlug };
+const updatePostService = async (id, data) => {
+  let slug = data.slug;
+  if (data.title) {
+    slug = slugify(data.title, { lower: true, strict: true });
+
+    await checkSlugUnique(slug, id);
+  }
+
+  return await updateExistingPost(id, { ...data, slug });
+};
+
+const deletePostService = async (id) => {
+  return await deleteExistingPost(id);
+};
+
+const checkSlugUnique = async (slug, postId) => {
+  const post = await getPostBySlug(slug);
+  if (post && post.id !== postId) {
+    throw new ValidationError('Post with this title already exists');
+  }
+};
+
+export {
+  getAllPostsService,
+  getPostBySlugService,
+  updatePostService,
+  deletePostService,
+};

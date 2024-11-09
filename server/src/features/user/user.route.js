@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
 import {
-  changePassword,
-  editUser,
+  updateUserPassword,
+  updateUserDetails,
   getDetailUser,
-  uploadAvatar,
+  updateUserAvatar,
 } from './user.controller.js';
 import { authenticateJWT } from '../../middlewares/verifyToken.js';
 import {
@@ -16,18 +16,23 @@ import multerConfig from '../../config/multer.js';
 const router = Router();
 
 router.get('/:username', getDetailUser);
-router.patch('/profile', authenticateJWT, validateUpdateProfile, editUser);
+router.patch(
+  '/profile',
+  authenticateJWT,
+  validateUpdateProfile,
+  updateUserDetails
+);
 router.patch(
   '/change-password',
   authenticateJWT,
   validateChangePassword,
-  changePassword
+  updateUserPassword
 );
 router.patch(
   '/upload-avatar',
   authenticateJWT,
   multerConfig.single('avatar'),
-  uploadAvatar
+  updateUserAvatar
 );
 
 export default router;

@@ -21,7 +21,7 @@ const getDetailUser = async (req, res, next) => {
   }
 };
 
-const editUser = async (req, res, next) => {
+const updateUserDetails = async (req, res, next) => {
   const { id } = req.user;
 
   const data = await updateUser(id, req.body);
@@ -36,7 +36,7 @@ const editUser = async (req, res, next) => {
   }
 };
 
-const changePassword = async (req, res, next) => {
+const updateUserPassword = async (req, res, next) => {
   const { id } = req.user;
 
   try {
@@ -50,7 +50,7 @@ const changePassword = async (req, res, next) => {
   }
 };
 
-const uploadAvatar = async (req, res, next) => {
+const updateUserAvatar = async (req, res, next) => {
   const { id } = req.user;
 
   if (!req.file) {
@@ -78,4 +78,4 @@ const uploadAvatar = async (req, res, next) => {
   }
 };
 
-export { getDetailUser, editUser, changePassword, uploadAvatar };
+export { getDetailUser, updateUserDetails, updateUserPassword, updateUserAvatar };

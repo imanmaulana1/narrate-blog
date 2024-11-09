@@ -1,7 +1,7 @@
 import prisma from '../../config/database.js';
-import { DatabaseError } from '../../utils/error.js';
+import { DatabaseError, NotFoundError } from '../../utils/error.js';
 
-const getAllPosts = async () => {
+const getPostsList = async () => {
   try {
     return await prisma.post.findMany({
       select: {
@@ -40,7 +40,7 @@ const getAllPosts = async () => {
   }
 };
 
-const getPostsBySlug = async (slug) => {
+const getPostBySlug = async (slug) => {
   try {
     return await prisma.post.findUnique({
       where: {
@@ -69,22 +69,6 @@ const getPostsBySlug = async (slug) => {
             slug: true,
           },
         },
-        comments: {
-          select: {
-            id: true,
-            content: true,
-            created_at: true,
-            updated_at: true,
-            author: {
-              select: {
-                id: true,
-                username: true,
-                name: true,
-                avatar: true,
-              },
-            },
-          },
-        },
         _count: {
           select: {
             comments: true,
@@ -98,4 +82,83 @@ const getPostsBySlug = async (slug) => {
   }
 };
 
-export { getAllPosts, getPostsBySlug };
+const createNewPost = async (data) => {
+  try {
+    return await prisma.post.create({
+      data,
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to create post');
+  }
+};
+
+const updateExistingPost = async (id, data) => {
+  try {
+    return await prisma.post.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  } catch (error) {
+    if (error.code === 'P2025') {
+      throw new NotFoundError(
+        `Sorry, the user record you're trying to update doesn't exist. Please check the information and try again`
+      );
+    }
+    throw new DatabaseError('Failed to update post');
+  }
+};
+
+const updatePostCategoryAssignment = async (postId, categoryId) => {
+  try {
+    return await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        category_id: categoryId,
+      },
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to update category post');
+  }
+};
+
+const deleteExistingPost = async (id) => {
+  try {
+    await prisma.comment.deleteMany({
+      where: {
+        post_id: id,
+      },
+    });
+
+    await prisma.postLike.deleteMany({
+      where: {
+        post_id: id,
+      },
+    });
+
+    return await prisma.post.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    if (error.code === 'P2025') {
+      throw new NotFoundError(
+        'The post has already been deleted or does not exist'
+      );
+    }
+    throw new DatabaseError('Failed to delete post');
+  }
+};
+
+export {
+  createNewPost,
+  deleteExistingPost,
+  getPostsList,
+  getPostBySlug,
+  updateExistingPost,
+  updatePostCategoryAssignment,
+};
