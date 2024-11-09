@@ -5,6 +5,7 @@ import {
   getPostsList,
   getPostBySlug,
   updateExistingPost,
+  getPostById,
 } from './post.repository.js';
 
 const getAllPostsService = async () => {
@@ -25,8 +26,13 @@ const getPostBySlugService = async (slug) => {
   return post;
 };
 
+const getPostByIdService = async (id) => {
+  return await getPostById(id);
+};
+
 const updatePostService = async (id, data) => {
   let slug = data.slug;
+
   if (data.title) {
     slug = slugify(data.title, { lower: true, strict: true });
 
@@ -50,6 +56,7 @@ const checkSlugUnique = async (slug, postId) => {
 export {
   getAllPostsService,
   getPostBySlugService,
+  getPostByIdService,
   updatePostService,
   deletePostService,
 };

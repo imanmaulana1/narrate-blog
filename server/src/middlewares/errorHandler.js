@@ -1,5 +1,6 @@
 import {
   DatabaseError,
+  ForbiddenError,
   NotFoundError,
   UnauthorizedError,
   ValidationError,
@@ -33,6 +34,13 @@ export const errorHandler = (error, req, res, next) => {
     });
   }
 
+  if (error instanceof ForbiddenError) {
+    return res.status(error.statusCode).json({
+      success: false,
+      message: error.message,
+    });
+  }
+
   if (error instanceof NotFoundError) {
     return res.status(error.statusCode).json({
       success: false,
@@ -53,5 +61,5 @@ export const errorHandler = (error, req, res, next) => {
       .json({ success: false, error: 'File size exceeds the 1MB limit' });
   }
 
-  res.status(500).json({ error: 'An unexpected error occurred' });
+  res.status(500).json({ error: 'An unexpected error occurred', msg: error });
 };

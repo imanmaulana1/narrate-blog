@@ -1,8 +1,10 @@
+import { ForbiddenError } from '../../utils/error.js';
 import {
   updatePostService,
   getPostBySlugService,
   getAllPostsService,
   deletePostService,
+  getPostByIdService,
 } from './post.service.js';
 
 const getAllPosts = async (req, res, next) => {
@@ -50,6 +52,7 @@ const updatePost = async (req, res, next) => {
 
 const removePost = async (req, res, next) => {
   const { id } = req.params;
+
   try {
     await deletePostService(id);
 

@@ -82,6 +82,18 @@ const getPostBySlug = async (slug) => {
   }
 };
 
+const getPostById = async (id) => {
+  try {
+    return await prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to get post');
+  }
+};
+
 const createNewPost = async (data) => {
   try {
     return await prisma.post.create({
@@ -159,6 +171,7 @@ export {
   deleteExistingPost,
   getPostsList,
   getPostBySlug,
+  getPostById,
   updateExistingPost,
   updatePostCategoryAssignment,
 };
