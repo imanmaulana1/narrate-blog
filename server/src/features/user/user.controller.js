@@ -1,8 +1,8 @@
 import {
-  findUserByUsername,
-  updateAvatar,
-  updatePassword,
-  updateUser,
+  getUserByUsernameService,
+  updateAvatarService,
+  updatePasswordService,
+  updateUserService,
 } from './user.service.js';
 
 const getDetailUser = async (req, res, next) => {
@@ -13,7 +13,7 @@ const getDetailUser = async (req, res, next) => {
   }
 
   try {
-    const user = await findUserByUsername(username);
+    const user = await getUserByUsernameService(username);
 
     res.json(user);
   } catch (error) {
@@ -24,7 +24,7 @@ const getDetailUser = async (req, res, next) => {
 const updateUserDetails = async (req, res, next) => {
   const { id } = req.user;
 
-  const data = await updateUser(id, req.body);
+  const data = await updateUserService(id, req.body);
 
   try {
     res.send({
@@ -40,7 +40,7 @@ const updateUserPassword = async (req, res, next) => {
   const { id } = req.user;
 
   try {
-    await updatePassword(id, req.body);
+    await updatePasswordService(id, req.body);
 
     res.send({
       message: 'Password updated successfully',
@@ -62,7 +62,7 @@ const updateUserAvatar = async (req, res, next) => {
   const imgUrl = `${process.env.BASE_URL}/images/${req.file.filename}`;
 
   try {
-    const data = await updateAvatar(id, imgUrl);
+    const data = await updateAvatarService(id, imgUrl);
 
     res.send({
       message: 'Your profile picture has been updated successfully!',

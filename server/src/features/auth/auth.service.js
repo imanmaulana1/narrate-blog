@@ -6,15 +6,15 @@ import {
 import { generateAuthToken } from '../../utils/generateAuthToken.js';
 import { checkPassword, hashPassword } from '../../utils/password.js';
 import {
-  getUserByEmail,
-  getUserById,
-  getUserByUsername,
-  insertUser,
+  findUserByEmail,
+  findUserById,
+  findUserByUsername,
+  createNewUser,
 } from './auth.repository.js';
 
-const createUser = async (data) => {
-  const isEmailExists = await getUserByEmail(data.email);
-  const isUsernameExists = await getUserByUsername(data.username);
+const createUserService = async (data) => {
+  const isEmailExists = await findUserByEmail(data.email);
+  const isUsernameExists = await findUserByUsername(data.username);
 
   if (isEmailExists) {
     throw new ValidationError('Email already exists');
@@ -30,17 +30,17 @@ const createUser = async (data) => {
 
   console.log(imgUrl);
 
-  return await insertUser({
+  return await createNewUser({
     ...data,
     password: hashedPassword,
     avatar: imgUrl,
   });
 };
 
-const getUser = async (data) => {
+const getUserService = async (data) => {
   const user =
-    (await getUserByUsername(data.credential)) ||
-    (await getUserByEmail(data.credential));
+    (await findUserByUsername(data.credential)) ||
+    (await findUserByEmail(data.credential));
 
   if (!user) {
     throw new UnauthorizedError(
@@ -52,7 +52,7 @@ const getUser = async (data) => {
 
   if (!isPasswordMatch) {
     throw new UnauthorizedError(
-      'The password you entered is incorrect. Please double-check and try again'
+      `The password you entered is incorrect. Please double-check and try again`
     );
   }
 
@@ -69,8 +69,8 @@ const getUser = async (data) => {
   return { userData, token };
 };
 
-const findUserById = async (id) => {
-  const user = await getUserById(id);
+const getUserByIdService = async (id) => {
+  const user = await findUserById(id);
 
   if (!user) {
     throw new NotFoundError('User not found');
@@ -79,18 +79,18 @@ const findUserById = async (id) => {
   return user;
 };
 
-const findUserByUsername = async (username) => {
-  return await getUserByUsername(username);
+const getUserByUsernameService = async (username) => {
+  return await findUserByUsername(username);
 };
 
-const findUserByEmail = async (email) => {
-  return await getUserByEmail(email);
+const getUserByEmailService = async (email) => {
+  return await findUserByEmail(email);
 };
 
 export {
-  createUser,
-  getUser,
-  findUserById,
-  findUserByUsername,
-  findUserByEmail,
+  createUserService,
+  getUserService,
+  getUserByIdService,
+  getUserByUsernameService,
+  getUserByEmailService,
 };

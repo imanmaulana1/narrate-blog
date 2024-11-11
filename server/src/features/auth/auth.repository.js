@@ -1,7 +1,7 @@
 import prisma from '../../config/database.js';
 import { DatabaseError } from '../../utils/error.js';
 
-const getUserById = async (id) => {
+const findUserById = async (id) => {
   try {
     return await prisma.user.findUnique({
       where: {
@@ -13,7 +13,7 @@ const getUserById = async (id) => {
   }
 };
 
-const getUserByEmail = async (email) => {
+const findUserByEmail = async (email) => {
   try {
     return await prisma.user.findUnique({
       where: {
@@ -25,7 +25,7 @@ const getUserByEmail = async (email) => {
   }
 };
 
-const getUserByUsername = async (username) => {
+const findUserByUsername = async (username) => {
   try {
     return await prisma.user.findUnique({
       where: {
@@ -37,7 +37,7 @@ const getUserByUsername = async (username) => {
   }
 };
 
-const insertUser = async ({ name, username, email, password, avatar }) => {
+const createNewUser = async ({ name, username, email, password, avatar }) => {
   try {
     return await prisma.user.create({
       data: {
@@ -53,4 +53,4 @@ const insertUser = async ({ name, username, email, password, avatar }) => {
   }
 };
 
-export { getUserById, getUserByEmail, getUserByUsername, insertUser };
+export { findUserById, findUserByEmail, findUserByUsername, createNewUser };

@@ -51,7 +51,7 @@ export const errorHandler = (error, req, res, next) => {
   if (error instanceof DatabaseError) {
     return res.status(error.statusCode).json({
       success: false,
-      message: 'An internal server error occurred',
+      message: error.message,
     });
   }
 

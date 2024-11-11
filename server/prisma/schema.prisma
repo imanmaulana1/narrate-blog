@@ -63,7 +63,7 @@ model Comment {
 model Category {
   id         String   @id @default(uuid())
   name       String
-  slug       String
+  slug       String @unique
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

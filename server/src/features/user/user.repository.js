@@ -1,7 +1,7 @@
 import prisma from '../../config/database.js';
 import { DatabaseError } from '../../utils/error.js';
 
-const getUserByUsername = async (username) => {
+const findUserByUsername = async (username) => {
   try {
     return await prisma.user.findUnique({
       where: {
@@ -13,7 +13,7 @@ const getUserByUsername = async (username) => {
   }
 };
 
-const getUserById = async (id) => {
+const findUserById = async (id) => {
   try {
     return await prisma.user.findUnique({
       where: {
@@ -38,4 +38,4 @@ const updateUserById = async (id, data) => {
   }
 };
 
-export { getUserByUsername, getUserById, updateUserById };
+export { findUserByUsername, findUserById, updateUserById };

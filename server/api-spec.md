@@ -14,7 +14,7 @@
 ## POST Endpoints
 
 - GET /api/posts // List of all posts
-- GET /api/posts/{id}/{slug} // Get a single post
+- GET /api/posts/{slug} // Get a single post
 - POST /api/posts (Authorization: Bearer <token>) // Create a new post
 - PATCH /api/posts/{id} (Authorization: Bearer <token>) // Update a post
 - DELETE /api/posts/{id} (Authorization: Bearer <token>) // Delete a post
@@ -23,7 +23,6 @@
 
 - GET /api/category // List of all categories
 - GET /api/category/{slug} // List of posts in a category
-- PATCH /api/posts/{postId}/category/{categoryId} (Authorization: Bearer <token>) // Assign or reassign a post to a category
 
 ## COMMENT Endpoints
 

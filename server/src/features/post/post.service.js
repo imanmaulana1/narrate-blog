@@ -1,23 +1,23 @@
 import slugify from 'slugify';
 import crypto from 'crypto';
-import { NotFoundError, ValidationError } from '../../utils/error.js';
+import { NotFoundError } from '../../utils/error.js';
 import {
   deleteExistingPost,
-  getPostsList,
-  getPostBySlug,
+  findAllPosts,
+  findPostBySlug,
   updateExistingPost,
-  getPostById,
+  findPostById,
   createNewPost,
 } from './post.repository.js';
 
 const getAllPostsService = async () => {
-  const posts = await getPostsList();
+  const posts = await findAllPosts();
 
   return posts;
 };
 
 const getPostBySlugService = async (slug) => {
-  const post = await getPostBySlug(slug);
+  const post = await findPostBySlug(slug);
 
   if (!post) {
     throw new NotFoundError(
@@ -29,7 +29,7 @@ const getPostBySlugService = async (slug) => {
 };
 
 const getPostByIdService = async (postId) => {
-  return await getPostById(postId);
+  return await findPostById(postId);
 };
 
 const createPostService = async (userId, data) => {
@@ -72,13 +72,13 @@ const generateRandomString = () => {
 };
 
 const checkSlugUnique = async (slug) => {
-  let post = await getPostBySlug(slug);
+  let post = await findPostBySlug(slug);
 
   while (post) {
     const randomString = generateRandomString();
     const newSlug = `${slug}-${randomString}`;
 
-    post = await getPostBySlug(newSlug);
+    post = await findPostBySlug(newSlug);
 
     if (!post) {
       slug = newSlug;

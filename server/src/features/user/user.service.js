@@ -1,13 +1,13 @@
 import { NotFoundError, UnauthorizedError } from '../../utils/error.js';
 import { checkPassword, hashPassword } from '../../utils/password.js';
 import {
-  getUserById,
-  getUserByUsername,
+  findUserById,
+  findUserByUsername,
   updateUserById,
 } from './user.repository.js';
 
-const findUserByUsername = async (username) => {
-  const user = await getUserByUsername(username);
+const getUserByUsernameService = async (username) => {
+  const user = await findUserByUsername(username);
 
   if (!user) {
     throw new NotFoundError('User not found');
@@ -18,7 +18,7 @@ const findUserByUsername = async (username) => {
   return userData;
 };
 
-const updateUser = async (id, data) => {
+const updateUserService = async (id, data) => {
   const user = await updateUserById(id, data);
 
   const { password, ...userData } = user;
@@ -26,8 +26,8 @@ const updateUser = async (id, data) => {
   return userData;
 };
 
-const updatePassword = async (id, data) => {
-  const { password } = await getUserById(id);
+const updatePasswordService = async (id, data) => {
+  const { password } = await findUserById(id);
 
   const isPasswordMatch = await checkPassword(data.oldPassword, password);
 
@@ -42,10 +42,10 @@ const updatePassword = async (id, data) => {
   return await updateUserById(id, { password: hashedPassword });
 };
 
-const updateAvatar = async (id, avatar) => {
+const updateAvatarService = async (id, avatar) => {
   const user = await updateUserById(id, { avatar });
 
   return user;
 };
 
-export { findUserByUsername, updateUser, updateAvatar, updatePassword };
+export { getUserByUsernameService, updateUserService, updateAvatarService, updatePasswordService };

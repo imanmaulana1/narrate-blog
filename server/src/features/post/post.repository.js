@@ -1,7 +1,7 @@
 import prisma from '../../config/database.js';
 import { DatabaseError, NotFoundError } from '../../utils/error.js';
 
-const getPostsList = async () => {
+const findAllPosts = async () => {
   try {
     return await prisma.post.findMany({
       select: {
@@ -36,11 +36,11 @@ const getPostsList = async () => {
       },
     });
   } catch (error) {
-    throw new DatabaseError('Failed to get posts');
+    throw new DatabaseError(`Failed to get posts: ${error.message}`);
   }
 };
 
-const getPostBySlug = async (slug) => {
+const findPostBySlug = async (slug) => {
   try {
     return await prisma.post.findUnique({
       where: {
@@ -82,7 +82,7 @@ const getPostBySlug = async (slug) => {
   }
 };
 
-const getPostById = async (id) => {
+const findPostById = async (id) => {
   try {
     return await prisma.post.findUnique({
       where: {
@@ -154,8 +154,8 @@ const deleteExistingPost = async (id) => {
 export {
   createNewPost,
   deleteExistingPost,
-  getPostsList,
-  getPostBySlug,
-  getPostById,
+  findAllPosts,
+  findPostBySlug,
+  findPostById,
   updateExistingPost,
 };
