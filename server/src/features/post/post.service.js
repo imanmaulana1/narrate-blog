@@ -8,12 +8,30 @@ import {
   updateExistingPost,
   findPostById,
   createNewPost,
+  countPosts,
 } from './post.repository.js';
 
-const getAllPostsService = async () => {
-  const posts = await findAllPosts();
+const getAllPostsService = async (options) => {
+  const count = await countPosts();
+  const totalPage = Math.ceil(count / options.limit);
 
-  return posts;
+  options.total = count;
+  options.totalPage = totalPage;
+
+  const pagination = {
+    currentPage: options.page || 1,
+    totalPage: totalPage || 1,
+    totalData: count,
+    limit: options.limit || 10,
+    offset: options.offset || 0,
+  };
+
+  const posts = await findAllPosts({
+    offset: pagination.offset,
+    limit: pagination.limit,
+  });
+
+  return { posts, pagination };
 };
 
 const getPostBySlugService = async (slug) => {

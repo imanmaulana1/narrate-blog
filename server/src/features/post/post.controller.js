@@ -7,14 +7,31 @@ import {
 } from './post.service.js';
 
 const getAllPosts = async (req, res, next) => {
+  let { page, limit } = req.query;
+
+  const parsedPage = Math.max(parseInt(page), 1);
+  const parsedLimit = Math.min(Math.max(parseInt(limit), 1), 100);
+  const offset = (parseInt(parsedPage) - 1) * parsedLimit || 0;
+
+  const options = {
+    page: parsedPage,
+    limit: parsedLimit,
+    offset,
+  };
+
   try {
-    const posts = await getAllPostsService();
+    const { posts, pagination } = await getAllPostsService(options);
 
     res.send({
       message: 'Posts fetched successfully',
       data: posts,
+      pagination: {
+        ...pagination,
+        has_more: pagination.currentPage < pagination.totalPage,
+      },
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

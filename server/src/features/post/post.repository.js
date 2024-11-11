@@ -1,9 +1,11 @@
 import prisma from '../../config/database.js';
 import { DatabaseError, NotFoundError } from '../../utils/error.js';
 
-const findAllPosts = async () => {
+const findAllPosts = async ({ offset, limit }) => {
   try {
     return await prisma.post.findMany({
+      skip: offset,
+      take: limit,
       select: {
         id: true,
         title: true,
@@ -151,8 +153,17 @@ const deleteExistingPost = async (id) => {
   }
 };
 
+const countPosts = async () => {
+  try {
+    return await prisma.post.count();
+  } catch (error) {
+    throw new DatabaseError('Failed to count posts');
+  }
+};
+
 export {
   createNewPost,
+  countPosts,
   deleteExistingPost,
   findAllPosts,
   findPostBySlug,
