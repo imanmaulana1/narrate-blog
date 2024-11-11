@@ -1,10 +1,9 @@
-import { ForbiddenError } from '../../utils/error.js';
 import {
   updatePostService,
   getPostBySlugService,
   getAllPostsService,
   deletePostService,
-  getPostByIdService,
+  createPostService,
 } from './post.service.js';
 
 const getAllPosts = async (req, res, next) => {
@@ -28,6 +27,29 @@ const getPostBySlug = async (req, res, next) => {
 
     res.send({
       message: 'Post fetched successfully',
+      data: post,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const createPost = async (req, res, next) => {
+  const { id: userId } = req.user;
+  let data = req.body;
+  data = { ...data };
+
+  if (req.file) {
+    const imgUrl = `${process.env.BASE_URL}/images/${req.file.filename}`;
+
+    data.image = imgUrl;
+  }
+
+  try {
+    const post = await createPostService(userId, data);
+
+    res.status(201).send({
+      message: 'Post created successfully',
       data: post,
     });
   } catch (error) {
@@ -64,4 +86,4 @@ const removePost = async (req, res, next) => {
   }
 };
 
-export { getAllPosts, getPostBySlug, updatePost, removePost };
+export { createPost, getAllPosts, getPostBySlug, updatePost, removePost };

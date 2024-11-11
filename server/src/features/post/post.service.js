@@ -1,4 +1,5 @@
 import slugify from 'slugify';
+import crypto from 'crypto';
 import { NotFoundError, ValidationError } from '../../utils/error.js';
 import {
   deleteExistingPost,
@@ -6,6 +7,7 @@ import {
   getPostBySlug,
   updateExistingPost,
   getPostById,
+  createNewPost,
 } from './post.repository.js';
 
 const getAllPostsService = async () => {
@@ -26,34 +28,70 @@ const getPostBySlugService = async (slug) => {
   return post;
 };
 
-const getPostByIdService = async (id) => {
-  return await getPostById(id);
+const getPostByIdService = async (postId) => {
+  return await getPostById(postId);
 };
 
-const updatePostService = async (id, data) => {
+const createPostService = async (userId, data) => {
+  let slugGenerate = slugify(data.title, { lower: true, strict: true });
+
+  try {
+    const slug = await checkSlugUnique(slugGenerate);
+
+    const payload = {
+      ...data,
+      slug,
+      author_id: userId,
+    };
+    const post = await createNewPost(payload);
+
+    return post;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updatePostService = async (postId, data) => {
   let slug = data.slug;
 
   if (data.title) {
     slug = slugify(data.title, { lower: true, strict: true });
 
-    await checkSlugUnique(slug, id);
+    await checkSlugUnique(slug);
   }
 
-  return await updateExistingPost(id, { ...data, slug });
+  return await updateExistingPost(postId, { ...data, slug });
 };
 
-const deletePostService = async (id) => {
-  return await deleteExistingPost(id);
+const deletePostService = async (postId) => {
+  return await deleteExistingPost(postId);
 };
 
-const checkSlugUnique = async (slug, postId) => {
-  const post = await getPostBySlug(slug);
-  if (post && post.id !== postId) {
-    throw new ValidationError('Post with this title already exists');
+const generateRandomString = () => {
+  return crypto.randomBytes(3).toString('hex');
+};
+
+const checkSlugUnique = async (slug) => {
+  let post = await getPostBySlug(slug);
+
+  while (post) {
+    const randomString = generateRandomString();
+    const newSlug = `${slug}-${randomString}`;
+
+    post = await getPostBySlug(newSlug);
+
+    if (!post) {
+      slug = newSlug;
+
+      break;
+    }
   }
+
+  return slug;
 };
 
 export {
+  createPostService,
   getAllPostsService,
   getPostBySlugService,
   getPostByIdService,

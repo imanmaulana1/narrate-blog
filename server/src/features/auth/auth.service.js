@@ -28,7 +28,7 @@ const createUser = async (data) => {
 
   const imgUrl = `${process.env.BASE_URL}/images/default-avatar.png`;
 
-  console.log(imgUrl)
+  console.log(imgUrl);
 
   return await insertUser({
     ...data,
@@ -62,6 +62,7 @@ const getUser = async (data) => {
     id: user.id,
     username: user.username,
     email: user.email,
+    avatar: user.avatar,
     created_at: user.created_at,
   };
 

@@ -73,16 +73,34 @@ const UpdateProfileSchema = Joi.object({
 
 const ChangePasswordSchema = Joi.object({
   oldPassword: Joi.string().required().messages({
-    'string.empty': 'The old password is required'
+    'string.empty': 'The old password is required',
   }),
   newPassword: Joi.string().required().min(6).messages({
     'string.empty': 'The new password is required',
     'string.min': 'The new password must be at least 6 characters long',
   }),
-  confirmPassword: Joi.string().required().valid(Joi.ref('newPassword')).messages({
-    'string.empty': 'The password confirmation is required',
-    'any.only': 'The passwords are not the same',
+  confirmPassword: Joi.string()
+    .required()
+    .valid(Joi.ref('newPassword'))
+    .messages({
+      'string.empty': 'The password confirmation is required',
+      'any.only': 'The passwords are not the same',
+    }),
+});
+
+const PostSchema = Joi.object({
+  title: Joi.string().required().min(3).messages({
+    'string.empty': 'The title is required',
+    'string.min': 'The title must be at least 3 characters long',
   }),
+  content: Joi.string().required().min(3).messages({
+    'string.empty': 'The content is required',
+    'string.min': 'The content must be at least 3 characters long',
+  }),
+  category_id: Joi.required().messages({
+    'string.empty': 'The category is required',
+  }),
+  image: Joi.any().optional(),
 });
 
 const validateUser = (schema) => async (req, res, next) => {
@@ -101,3 +119,4 @@ export const validateRegister = validateUser(RegisterSchema);
 export const validateLogin = validateUser(LoginSchema);
 export const validateUpdateProfile = validateUser(UpdateProfileSchema);
 export const validateChangePassword = validateUser(ChangePasswordSchema);
+export const validatePost = validateUser(PostSchema);

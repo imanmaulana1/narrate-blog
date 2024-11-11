@@ -11,13 +11,17 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, '../../uploads'));
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    if (req.url === '/upload-avatar') {
+      cb(null, `${Date.now()}-avatar-${file.originalname}`);
+    } else {
+      cb(null, `${Date.now()}-post-${file.originalname}`);
+    }
   },
 });
 
 const multerConfig = multer({
   storage,
-  limits: { fileSize: 1 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const fileTypes = /jpg|jpeg|png/;
     const extname = fileTypes.test(

@@ -122,21 +122,6 @@ const updateExistingPost = async (id, data) => {
   }
 };
 
-const updatePostCategoryAssignment = async (postId, categoryId) => {
-  try {
-    return await prisma.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        category_id: categoryId,
-      },
-    });
-  } catch (error) {
-    throw new DatabaseError('Failed to update category post');
-  }
-};
-
 const deleteExistingPost = async (id) => {
   try {
     await prisma.comment.deleteMany({
@@ -173,5 +158,4 @@ export {
   getPostBySlug,
   getPostById,
   updateExistingPost,
-  updatePostCategoryAssignment,
 };
