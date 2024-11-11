@@ -29,6 +29,7 @@ const findAllPosts = async ({ offset, limit }) => {
             slug: true,
           },
         },
+        views: true,
         _count: {
           select: {
             comments: true,
@@ -161,10 +162,59 @@ const countPosts = async () => {
   }
 };
 
+const existingUserLike = async (postId, userId) => {
+  try {
+    return await prisma.postLike.findUnique({
+      where: {
+        post_id_user_id: {
+          post_id: postId,
+          user_id: userId,
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new DatabaseError('Failed to get post like');
+  }
+};
+
+const createLikePost = async (postId, userId) => {
+  try {
+    return await prisma.postLike.create({
+      data: {
+        post_id: postId,
+        user_id: userId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new DatabaseError('Failed to create post like');
+  }
+};
+
+const deleteLikePost = async (postId, userId) => {
+  try {
+    return await prisma.postLike.delete({
+      where: {
+        post_id_user_id: {
+          post_id: postId,
+          user_id: userId,
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new DatabaseError('Failed to delete post like');
+  }
+};
+
 export {
   createNewPost,
+  createLikePost,
   countPosts,
   deleteExistingPost,
+  deleteLikePost,
+  existingUserLike,
   findAllPosts,
   findPostBySlug,
   findPostById,

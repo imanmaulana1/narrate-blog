@@ -4,6 +4,7 @@ import {
   getAllPostsService,
   deletePostService,
   createPostService,
+  likePostService,
 } from './post.service.js';
 
 const getAllPosts = async (req, res, next) => {
@@ -20,11 +21,11 @@ const getAllPosts = async (req, res, next) => {
   };
 
   try {
-    const { posts, pagination } = await getAllPostsService(options);
+    const { data, pagination } = await getAllPostsService(options);
 
     res.send({
       message: 'Posts fetched successfully',
-      data: posts,
+      data,
       pagination: {
         ...pagination,
         has_more: pagination.currentPage < pagination.totalPage,
@@ -40,11 +41,11 @@ const getPostBySlug = async (req, res, next) => {
   const { slug } = req.params;
 
   try {
-    const post = await getPostBySlugService(slug);
+    const data = await getPostBySlugService(slug);
 
     res.send({
       message: 'Post fetched successfully',
-      data: post,
+      data,
     });
   } catch (error) {
     next(error);
@@ -117,4 +118,27 @@ const removePost = async (req, res, next) => {
   }
 };
 
-export { createPost, getAllPosts, getPostBySlug, updatePost, removePost };
+const likePost = async (req, res, next) => {
+  const { id: userId } = req.user;
+  const { id: postId } = req.params;
+
+  try {
+    const response = await likePostService(userId, postId);
+
+    res.send({
+      message: 'Post liked successfully',
+      data: response,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export {
+  createPost,
+  getAllPosts,
+  getPostBySlug,
+  updatePost,
+  removePost,
+  likePost,
+};

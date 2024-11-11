@@ -33,6 +33,7 @@ model Post {
   image      String?
   author_id  String
   category_id String
+  views      Int @default(0)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -82,4 +83,6 @@ model PostLike {
 
   post Post @relation(fields: [post_id], references: [id])
   user User @relation(fields: [user_id], references: [id])
+
+  @@unique([post_id, user_id]) 
 }

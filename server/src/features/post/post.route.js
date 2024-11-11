@@ -5,12 +5,12 @@ import {
   updatePost,
   removePost,
   createPost,
+  likePost,
 } from './post.controller.js';
 import { authenticateJWT } from '../../middlewares/verifyToken.js';
-import { verifyUser } from '../../middlewares/verifyUser.js';
+import { verifyAuthor } from '../../middlewares/verifyAuthor.js';
 import { validatePost } from '../../middlewares/validateInput.js';
 import multerConfig from '../../config/multer.js';
-import multer from 'multer';
 
 const router = Router();
 
@@ -30,10 +30,12 @@ router.patch(
   '/:id',
   authenticateJWT,
   multerConfig.single('image'),
-  verifyUser,
+  verifyAuthor,
   updatePost
 );
 
-router.delete('/:id', authenticateJWT, verifyUser, removePost);
+router.delete('/:id', authenticateJWT, verifyAuthor, removePost);
+
+router.post('/:id/like', authenticateJWT, verifyAuthor, likePost);
 
 export default router;

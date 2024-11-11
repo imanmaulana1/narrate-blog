@@ -2,13 +2,16 @@ import slugify from 'slugify';
 import crypto from 'crypto';
 import { NotFoundError } from '../../utils/error.js';
 import {
+  countPosts,
+  createNewPost,
+  createLikePost,
   deleteExistingPost,
+  deleteLikePost,
+  existingUserLike,
   findAllPosts,
+  findPostById,
   findPostBySlug,
   updateExistingPost,
-  findPostById,
-  createNewPost,
-  countPosts,
 } from './post.repository.js';
 
 const getAllPostsService = async (options) => {
@@ -31,7 +34,18 @@ const getAllPostsService = async (options) => {
     limit: pagination.limit,
   });
 
-  return { posts, pagination };
+  const data = posts.map((post) => {
+    return {
+      ...post,
+      estimated_read_time: calculatedReadTime(post.content),
+    };
+  });
+
+  return { data, pagination };
+};
+
+const getPostByIdService = async (id) => {
+  return await findPostById(id);
 };
 
 const getPostBySlugService = async (slug) => {
@@ -43,11 +57,12 @@ const getPostBySlugService = async (slug) => {
     );
   }
 
-  return post;
-};
+  const data = {
+    ...post,
+    estimated_read_time: calculatedReadTime(post.content),
+  };
 
-const getPostByIdService = async (postId) => {
-  return await findPostById(postId);
+  return data;
 };
 
 const createPostService = async (userId, data) => {
@@ -85,6 +100,25 @@ const deletePostService = async (postId) => {
   return await deleteExistingPost(postId);
 };
 
+const likePostService = async (userId, postId) => {
+  const isUserLiked = await existingUserLike(postId, userId);
+
+  if (!isUserLiked) {
+    const createdLike = await createLikePost(postId, userId);
+    return {
+      message: 'Post liked successfully',
+      data: createdLike,
+    };
+  }
+
+  const deletedLike = await deleteLikePost(postId, userId);
+
+  return {
+    message: 'Post unliked successfully',
+    data: deletedLike,
+  };
+};
+
 const generateRandomString = () => {
   return crypto.randomBytes(3).toString('hex');
 };
@@ -108,11 +142,20 @@ const checkSlugUnique = async (slug) => {
   return slug;
 };
 
+const calculatedReadTime = (content) => {
+  const wordPerMinute = 200;
+  const words = content.split(/\s+/).length;
+  const minutes = Math.ceil(words / wordPerMinute);
+
+  return `${minutes} min read`;
+};
+
 export {
   createPostService,
-  getAllPostsService,
-  getPostBySlugService,
-  getPostByIdService,
-  updatePostService,
   deletePostService,
+  getAllPostsService,
+  getPostByIdService,
+  getPostBySlugService,
+  likePostService,
+  updatePostService,
 };

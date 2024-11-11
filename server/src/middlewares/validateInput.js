@@ -89,13 +89,14 @@ const ChangePasswordSchema = Joi.object({
 });
 
 const PostSchema = Joi.object({
-  title: Joi.string().required().min(3).messages({
+  title: Joi.string().required().min(5).max(60).messages({
     'string.empty': 'The title is required',
-    'string.min': 'The title must be at least 3 characters long',
+    'string.min': 'The title must be at least 5 characters long',
+    'string.max': 'The title must be at most 60 characters long',
   }),
-  content: Joi.string().required().min(3).messages({
+  content: Joi.string().required().min(10).messages({
     'string.empty': 'The content is required',
-    'string.min': 'The content must be at least 3 characters long',
+    'string.min': 'The content must be at least 10 characters long',
   }),
   category_id: Joi.required().messages({
     'string.empty': 'The category is required',
