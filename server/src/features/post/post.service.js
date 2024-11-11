@@ -52,13 +52,13 @@ const createPostService = async (userId, data) => {
 };
 
 const updatePostService = async (postId, data) => {
-  let slug = data.slug;
-
-  if (data.title) {
-    slug = slugify(data.title, { lower: true, strict: true });
-
-    await checkSlugUnique(slug);
+  if (!data.title) {
+    return await updateExistingPost(postId, { ...data });
   }
+
+  const generateSlug = slugify(data.title, { lower: true, strict: true });
+
+  const slug = await checkSlugUnique(generateSlug);
 
   return await updateExistingPost(postId, { ...data, slug });
 };

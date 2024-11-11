@@ -36,6 +36,7 @@ const getPostBySlug = async (req, res, next) => {
 
 const createPost = async (req, res, next) => {
   const { id: userId } = req.user;
+
   let data = req.body;
   data = { ...data };
 
@@ -58,14 +59,27 @@ const createPost = async (req, res, next) => {
 };
 
 const updatePost = async (req, res, next) => {
-  const { id } = req.params;
+  const { id: postId } = req.params;
+
+  let data = req.body;
+  data = { ...data };
+
+  if (data.image === 'null' || data.image === '') {
+    data.image = null;
+  }
+
+  if (req.file) {
+    const imgUrl = `${process.env.BASE_URL}/images/${req.file.filename}`;
+
+    data.image = imgUrl;
+  }
 
   try {
-    const data = await updatePostService(id, req.body);
+    const response = await updatePostService(postId, data);
 
     res.send({
       message: 'Post updated successfully',
-      data,
+      data: response,
     });
   } catch (error) {
     next(error);

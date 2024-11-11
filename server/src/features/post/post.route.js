@@ -10,6 +10,7 @@ import { authenticateJWT } from '../../middlewares/verifyToken.js';
 import { verifyUser } from '../../middlewares/verifyUser.js';
 import { validatePost } from '../../middlewares/validateInput.js';
 import multerConfig from '../../config/multer.js';
+import multer from 'multer';
 
 const router = Router();
 
@@ -25,7 +26,13 @@ router.post(
 
 router.get('/:slug', getPostBySlug);
 
-router.patch('/:id', authenticateJWT, verifyUser, updatePost);
+router.patch(
+  '/:id',
+  authenticateJWT,
+  multerConfig.single('image'),
+  verifyUser,
+  updatePost
+);
 
 router.delete('/:id', authenticateJWT, verifyUser, removePost);
 
