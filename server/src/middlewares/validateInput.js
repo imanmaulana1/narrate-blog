@@ -104,6 +104,12 @@ const PostSchema = Joi.object({
   image: Joi.any().optional(),
 });
 
+const CommentSchema = Joi.object({
+  content: Joi.string().required().messages({
+    'string.empty': 'The content is required',
+  }),
+});
+
 const validateUser = (schema) => async (req, res, next) => {
   try {
     await schema.validateAsync(req.body, {
@@ -121,3 +127,4 @@ export const validateLogin = validateUser(LoginSchema);
 export const validateUpdateProfile = validateUser(UpdateProfileSchema);
 export const validateChangePassword = validateUser(ChangePasswordSchema);
 export const validatePost = validateUser(PostSchema);
+export const validateComment = validateUser(CommentSchema);

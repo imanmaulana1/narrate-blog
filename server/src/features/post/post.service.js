@@ -12,6 +12,11 @@ import {
   findPostById,
   findPostBySlug,
   updateExistingPost,
+  findAllComments,
+  createNewComment,
+  findCommentById,
+  deleteComment,
+  updateComment,
 } from './post.repository.js';
 
 const getAllPostsService = async (options) => {
@@ -100,6 +105,26 @@ const deletePostService = async (postId) => {
   return await deleteExistingPost(postId);
 };
 
+const getAllCommentsService = async (postId) => {
+  return await findAllComments(postId);
+};
+
+const getCommentByIdService = async (id) => {
+  return await findCommentById(id);
+};
+
+const createCommentService = async (data) => {
+  return await createNewComment(data);
+};
+
+const updateCommentService = async (id, data) => {
+  return await updateComment(id, data);
+};
+
+const deleteCommentService = async (commentId) => {
+  return await deleteComment(commentId);
+};
+
 const likePostService = async (userId, postId) => {
   const isUserLiked = await existingUserLike(postId, userId);
 
@@ -152,10 +177,15 @@ const calculatedReadTime = (content) => {
 
 export {
   createPostService,
+  createCommentService,
   deletePostService,
+  deleteCommentService,
   getAllPostsService,
+  getAllCommentsService,
   getPostByIdService,
   getPostBySlugService,
+  getCommentByIdService,
   likePostService,
   updatePostService,
+  updateCommentService,
 };

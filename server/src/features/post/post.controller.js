@@ -5,8 +5,13 @@ import {
   deletePostService,
   createPostService,
   likePostService,
+  getAllCommentsService,
+  createCommentService,
+  deleteCommentService,
+  updateCommentService,
 } from './post.service.js';
 
+// CRUD POST
 const getAllPosts = async (req, res, next) => {
   let { page, limit } = req.query;
 
@@ -118,6 +123,7 @@ const removePost = async (req, res, next) => {
   }
 };
 
+// LIKE / UNLIKE POST
 const likePost = async (req, res, next) => {
   const { id: userId } = req.user;
   const { id: postId } = req.params;
@@ -134,11 +140,80 @@ const likePost = async (req, res, next) => {
   }
 };
 
+// CRUD COMMENT
+const getComments = async (req, res, next) => {
+  const { id: postId } = req.params;
+
+  try {
+    const data = await getAllCommentsService(postId);
+
+    res.send({
+      message: 'Comments fetched successfully',
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const createComment = async (req, res, next) => {
+  const { id: postId } = req.params;
+  const { id: userId } = req.user;
+
+  let data = req.body;
+  data = { ...data, post_id: postId, author_id: userId };
+
+  try {
+    const comment = await createCommentService(data);
+
+    res.status(201).send({
+      message: 'Comment created successfully',
+      data: comment,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateComment = async (req, res, next) => {
+  const { commentId } = req.params;
+  const { content } = req.body;
+
+  try {
+    const data = await updateCommentService(commentId, content);
+
+    res.send({
+      message: 'Comment updated successfully',
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const removeComment = async (req, res, next) => {
+  const { commentId } = req.params;
+
+  try {
+    await deleteCommentService(commentId);
+
+    res.send({
+      message: 'Your comment has been successfully deleted',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   createPost,
+  createComment,
   getAllPosts,
+  getComments,
   getPostBySlug,
   updatePost,
+  updateComment,
   removePost,
+  removeComment,
   likePost,
 };

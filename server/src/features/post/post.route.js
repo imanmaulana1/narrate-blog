@@ -6,16 +6,25 @@ import {
   removePost,
   createPost,
   likePost,
+  getComments,
+  createComment,
+  updateComment,
+  removeComment,
 } from './post.controller.js';
 import { authenticateJWT } from '../../middlewares/verifyToken.js';
-import { verifyAuthor } from '../../middlewares/verifyAuthor.js';
-import { validatePost } from '../../middlewares/validateInput.js';
+import verifyPostAuthor from '../../middlewares/verifyPostAuthor.js';
+import verifyCommentAuthor from '../../middlewares/verifyCommentAuthor.js';
+import {
+  validateComment,
+  validatePost,
+} from '../../middlewares/validateInput.js';
 import multerConfig from '../../config/multer.js';
+import verifyLikeAuthor from '../../middlewares/verifyLikeAuthor.js';
 
 const router = Router();
 
+// CRUD POST
 router.get('/', getAllPosts);
-
 router.post(
   '/',
   authenticateJWT,
@@ -23,19 +32,34 @@ router.post(
   validatePost,
   createPost
 );
-
 router.get('/:slug', getPostBySlug);
-
 router.patch(
   '/:id',
   authenticateJWT,
   multerConfig.single('image'),
-  verifyAuthor,
+  verifyPostAuthor,
   updatePost
 );
+router.delete('/:id', authenticateJWT, verifyPostAuthor, removePost);
 
-router.delete('/:id', authenticateJWT, verifyAuthor, removePost);
+// LIKES
+router.post('/:id/like', authenticateJWT, verifyLikeAuthor, likePost);
 
-router.post('/:id/like', authenticateJWT, verifyAuthor, likePost);
+// CRUD COMMENT
+router.get('/:id/comments', getComments);
+router.post('/:id/comments', authenticateJWT, validateComment, createComment);
+router.patch(
+  '/:id/comments/:commentId',
+  authenticateJWT,
+  verifyCommentAuthor,
+  validateComment,
+  updateComment
+);
+router.delete(
+  '/:id/comments/:commentId',
+  authenticateJWT,
+  verifyCommentAuthor,
+  removeComment
+);
 
 export default router;

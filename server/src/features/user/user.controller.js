@@ -17,6 +17,7 @@ const getDetailUser = async (req, res, next) => {
 
     res.json(user);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -78,4 +79,9 @@ const updateUserAvatar = async (req, res, next) => {
   }
 };
 
-export { getDetailUser, updateUserDetails, updateUserPassword, updateUserAvatar };
+export {
+  getDetailUser,
+  updateUserDetails,
+  updateUserPassword,
+  updateUserAvatar,
+};

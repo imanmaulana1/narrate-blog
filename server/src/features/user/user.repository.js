@@ -7,8 +7,27 @@ const findUserByUsername = async (username) => {
       where: {
         username,
       },
+      include: {
+        posts: {
+          include: {
+            _count: {
+              select: {
+                comments: true,
+                likes: true,
+              },
+            },
+          },
+        },
+
+        _count: {
+          select: {
+            posts: true, // pastikan nama field di schema benar
+          },
+        },
+      },
     });
   } catch (error) {
+    console.log(error);
     throw new DatabaseError('Failed to get user');
   }
 };

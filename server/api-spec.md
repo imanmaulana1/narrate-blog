@@ -34,13 +34,3 @@
 ## LIKE Endpoints
 
 - POST /api/posts/{id}/like (Authorization: Bearer <token>) // like or unlike a post
-
-## READING LIST Endpoints
-
-- GET /api/reading-lists
-- GET /api/reading-lists/{id}
-- POST /api/reading-lists (Authorization: Bearer <token>)
-- PATCH /api/reading-lists/{id} (Authorization: Bearer <token>)
-- DELETE /api/reading-lists/{id} (Authorization: Bearer <token>)
-- POST /api/reading-lists/{id}/posts (Authorization: Bearer <token>)
-- DELETE /api/reading-lists/{id}/posts/{postId} (Authorization: Bearer <token>)

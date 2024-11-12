@@ -48,4 +48,9 @@ const updateAvatarService = async (id, avatar) => {
   return user;
 };
 
-export { getUserByUsernameService, updateUserService, updateAvatarService, updatePasswordService };
+export {
+  getUserByUsernameService,
+  updateUserService,
+  updateAvatarService,
+  updatePasswordService,
+};

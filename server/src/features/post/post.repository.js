@@ -208,15 +208,94 @@ const deleteLikePost = async (postId, userId) => {
   }
 };
 
+const findAllComments = async (postId) => {
+  try {
+    return await prisma.comment.findMany({
+      where: {
+        post_id: postId,
+      },
+      orderBy: {
+        created_at: 'asc',
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to get comments');
+  }
+};
+
+const createNewComment = async (data) => {
+  try {
+    return await prisma.comment.create({
+      data,
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to create comment');
+  }
+};
+
+const findCommentById = async (id) => {
+  try {
+    return await prisma.comment.findUnique({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to get comment');
+  }
+};
+
+const updateComment = async (id, data) => {
+  try {
+    return await prisma.comment.update({
+      where: {
+        id,
+      },
+      data: {
+        content: data,
+      },
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to update comment');
+  }
+};
+
+const deleteComment = async (id) => {
+  try {
+    return await prisma.comment.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to delete comment');
+  }
+};
+
 export {
   createNewPost,
+  createNewComment,
   createLikePost,
   countPosts,
   deleteExistingPost,
   deleteLikePost,
+  deleteComment,
   existingUserLike,
   findAllPosts,
+  findAllComments,
   findPostBySlug,
   findPostById,
+  findCommentById,
   updateExistingPost,
+  updateComment,
 };
