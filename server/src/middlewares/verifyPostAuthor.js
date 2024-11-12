@@ -12,7 +12,7 @@ const verifyPostAuthor = async (req, res, next) => {
       throw new NotFoundError('Post not found');
     }
 
-    if (post.user_id !== userId) {
+    if (post.author_id !== userId) {
       throw new ForbiddenError('You are not authorized to modify this post');
     }
 
