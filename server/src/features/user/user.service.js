@@ -1,10 +1,17 @@
 import { NotFoundError, UnauthorizedError } from '../../utils/error.js';
 import { checkPassword, hashPassword } from '../../utils/password.js';
 import {
+  findAllUsers,
   findUserById,
   findUserByUsername,
   updateUserById,
 } from './user.repository.js';
+
+const getAllUsersService = async () => {
+  const users = await findAllUsers();
+
+  return users;
+};
 
 const getUserByUsernameService = async (username) => {
   const user = await findUserByUsername(username);
@@ -49,6 +56,7 @@ const updateAvatarService = async (id, avatar) => {
 };
 
 export {
+  getAllUsersService,
   getUserByUsernameService,
   updateUserService,
   updateAvatarService,

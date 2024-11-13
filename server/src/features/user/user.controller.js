@@ -1,9 +1,23 @@
 import {
+  getAllUsersService,
   getUserByUsernameService,
   updateAvatarService,
   updatePasswordService,
   updateUserService,
 } from './user.service.js';
+
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await getAllUsersService();
+
+    res.json({
+      message: 'Users fetched successfully',
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const getDetailUser = async (req, res, next) => {
   let { username } = req.params;
@@ -80,6 +94,7 @@ const updateUserAvatar = async (req, res, next) => {
 };
 
 export {
+  getAllUsers,
   getDetailUser,
   updateUserDetails,
   updateUserPassword,

@@ -5,6 +5,7 @@ import {
   updateUserDetails,
   getDetailUser,
   updateUserAvatar,
+  getAllUsers,
 } from './user.controller.js';
 import { authenticateJWT } from '../../middlewares/verifyToken.js';
 import {
@@ -15,6 +16,7 @@ import multerConfig from '../../config/multer.js';
 
 const router = Router();
 
+router.get('/', getAllUsers);
 router.get('/:username', getDetailUser);
 router.patch(
   '/profile',

@@ -1,6 +1,14 @@
 import prisma from '../../config/database.js';
 import { DatabaseError } from '../../utils/error.js';
 
+const findAllUsers = async () => {
+  try {
+    return await prisma.user.findMany();
+  } catch (error) {
+    throw new DatabaseError('Failed to get users');
+  }
+};
+
 const findUserByUsername = async (username) => {
   try {
     return await prisma.user.findUnique({
@@ -53,8 +61,9 @@ const updateUserById = async (id, data) => {
       data,
     });
   } catch (error) {
+    console.log(error);
     throw new DatabaseError('Failed to update user');
   }
 };
 
-export { findUserByUsername, findUserById, updateUserById };
+export { findAllUsers, findUserByUsername, findUserById, updateUserById };
