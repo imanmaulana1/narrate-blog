@@ -10,7 +10,12 @@ import {
 const getAllUsersService = async () => {
   const users = await findAllUsers();
 
-  return users;
+  const userData = users.map((user) => {
+    const { password, ...userData } = user;
+    return userData;
+  });
+
+  return userData;
 };
 
 const getUserByUsernameService = async (username) => {
