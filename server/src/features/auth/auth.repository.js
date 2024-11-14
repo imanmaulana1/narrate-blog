@@ -37,11 +37,10 @@ const findUserByUsername = async (username) => {
   }
 };
 
-const createNewUser = async ({ name, username, email, password, avatar }) => {
+const createNewUser = async ({ username, email, password, avatar }) => {
   try {
     return await prisma.user.create({
       data: {
-        name,
         username,
         email,
         password,

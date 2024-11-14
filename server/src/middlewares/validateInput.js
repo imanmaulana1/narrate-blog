@@ -1,10 +1,6 @@
 import Joi from 'joi';
 
 const RegisterSchema = Joi.object({
-  name: Joi.string().required().min(3).messages({
-    'string.empty': 'The name is required',
-    'string.min': 'The name must be at least 3 characters long',
-  }),
   username: Joi.string()
     .required()
     .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))

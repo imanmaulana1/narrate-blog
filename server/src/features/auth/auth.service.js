@@ -28,8 +28,6 @@ const createUserService = async (data) => {
 
   const imgUrl = `${process.env.BASE_URL}/images/default-avatar.png`;
 
-  console.log(imgUrl);
-
   return await createNewUser({
     ...data,
     password: hashedPassword,

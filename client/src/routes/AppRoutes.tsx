@@ -9,6 +9,7 @@ import MainLayout from '@/layouts/MainLayout';
 import PostPage from '@/pages/PostPage';
 import CreatePostPage from '@/pages/CreatePostPage';
 import PrivateRoutes from './PrivateRoutes';
+import AuthLayout from '@/layouts/AuthLayout';
 
 const routes = [
   {
@@ -59,12 +60,17 @@ const routes = [
     ],
   },
   {
-    path: '/register',
-    element: <RegisterPage />,
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
+    element: <AuthLayout />,
+    children: [
+      {
+        path: 'register',
+        element: <RegisterPage />,
+      },
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+    ],
   },
 
   {
