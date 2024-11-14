@@ -18,6 +18,7 @@ import { AxiosResponse } from 'axios';
 import { ApiErrorResponse, RegisterResponse } from '@/types/global';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -32,6 +33,8 @@ const RegisterForm = () => {
 
   const { toast } = useToast();
 
+  const navigate = useNavigate();
+
   const mutation = useMutation<
     AxiosResponse<RegisterResponse>,
     ApiErrorResponse,
@@ -42,24 +45,35 @@ const RegisterForm = () => {
 
       return await register(data);
     },
-    onError: (error: ApiErrorResponse) => {
-      console.error('Error during registration:', error);
-      toast({
-        title: error.errors ? 'Invalid Input' : error.message,
-        description: error.errors
-          ? error.errors[0].message
-          : `It looks like this email or username is already in use. Please try a different one.`,
-        variant: 'destructive',
-      });
-    },
-
     onSuccess: (data) => {
       console.log(data);
+      
       toast({
         title: 'Success! Your account has been created successfully.',
         description: 'Youll be redirected to the login page.',
         variant: 'success',
       });
+
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
+    },
+    onError: (error: ApiErrorResponse) => {
+      console.error('Error during registration:', error);
+
+      if (error.errors && error.errors.length > 0) {
+        toast({
+          title: 'Invalid Input',
+          description: error.errors[0].message,
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: error.message,
+          description: `It looks like this email or username is already in use. Please try a different one.`,
+          variant: 'destructive',
+        });
+      }
     },
   });
 

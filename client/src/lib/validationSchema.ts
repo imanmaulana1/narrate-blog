@@ -21,3 +21,8 @@ export const RegisterSchema = z
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
+
+export const LoginSchema = z.object({
+  credential: z.string().min(1, 'Email or username is required'),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
+});

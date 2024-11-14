@@ -1,15 +1,16 @@
 import { createBrowserRouter } from 'react-router-dom';
+
+import { PublicRoutes, PrivateRoutes } from '@/routes/ProtectedRoutes';
+import RootLayout from '@/layouts/RootLayout';
+import UserLayout from '@/layouts/UserLayout';
+import MainLayout from '@/layouts/MainLayout';
+import AuthLayout from '@/layouts/AuthLayout';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import NotFoundPage from '@/pages/NotFoundPage';
-import RootLayout from '@/layouts/RootLayout';
-import UserLayout from '@/layouts/UserLayout';
-import MainLayout from '@/layouts/MainLayout';
 import PostPage from '@/pages/PostPage';
 import CreatePostPage from '@/pages/CreatePostPage';
-import PrivateRoutes from './PrivateRoutes';
-import AuthLayout from '@/layouts/AuthLayout';
 
 const routes = [
   {
@@ -64,11 +65,23 @@ const routes = [
     children: [
       {
         path: 'register',
-        element: <RegisterPage />,
+        element: <PublicRoutes />,
+        children: [
+          {
+            index: true,
+            element: <RegisterPage />,
+          },
+        ],
       },
       {
         path: 'login',
-        element: <LoginPage />,
+        element: <PublicRoutes />,
+        children: [
+          {
+            index: true,
+            element: <LoginPage />,
+          },
+        ],
       },
     ],
   },

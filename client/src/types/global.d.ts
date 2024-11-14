@@ -30,11 +30,9 @@ export interface AuthWrapperProps extends AuthHeaderProps {
 }
 
 interface TokenResponse {
-  token: {
-    access_token: string;
-    token_type: string;
-    expires_in: string;
-  };
+  access_token: string;
+  token_type: string;
+  expires_in: string;
 }
 
 export interface ApiErrorResponse {
