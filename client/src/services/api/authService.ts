@@ -1,16 +1,10 @@
-import {
-  LoginData,
-  LoginResponse,
-  RegisterData,
-  RegisterResponse,
-} from '@/types/global';
 import { api } from '@/lib/axiosInstance';
 import handleApiError from '@/lib/apiErrorHandler';
-import { AxiosResponse } from 'axios';
+import { LoginData, LoginResponse, RegisterData, RegisterResponse } from '@/types/api/users/user';
 
 export const register = async (
   data: RegisterData
-): Promise<AxiosResponse<RegisterResponse>> => {
+): Promise<RegisterResponse> => {
   try {
     return await api.post('/auth/register', data);
   } catch (error) {
@@ -19,9 +13,7 @@ export const register = async (
   }
 };
 
-export const login = async (
-  data: LoginData
-): Promise<AxiosResponse<LoginResponse>> => {
+export const login = async (data: LoginData): Promise<LoginResponse> => {
   try {
     return await api.post('/auth/login', data);
   } catch (error) {

@@ -1,7 +1,13 @@
 import { z } from 'zod';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { RegisterSchema } from '@/lib/validationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useToast } from '@/hooks/use-toast';
+import { useMutation } from '@tanstack/react-query';
+import { register } from '@/services/api/authService';
+import { RegisterResponse } from '@/types/api/users/user';
+import { ApiErrorResponse } from '@/types/global';
 import {
   Form,
   FormControl,
@@ -12,16 +18,12 @@ import {
 } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { useMutation } from '@tanstack/react-query';
-import { register } from '@/services/api/authService';
-import { AxiosResponse } from 'axios';
-import { ApiErrorResponse, RegisterResponse } from '@/types/global';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
-import { useToast } from '@/hooks/use-toast';
-import { useNavigate } from 'react-router-dom';
+
+type User = z.infer<typeof RegisterSchema>;
 
 const RegisterForm = () => {
-  const form = useForm<z.infer<typeof RegisterSchema>>({
+  const form = useForm<User>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
       username: '',
@@ -35,36 +37,34 @@ const RegisterForm = () => {
 
   const navigate = useNavigate();
 
-  const mutation = useMutation<
-    AxiosResponse<RegisterResponse>,
-    ApiErrorResponse,
-    z.infer<typeof RegisterSchema>
-  >({
-    mutationFn: async (data: z.infer<typeof RegisterSchema>) => {
+  const mutation = useMutation<RegisterResponse, ApiErrorResponse, User>({
+    mutationFn: (data: User) => {
       RegisterSchema.parse(data);
 
-      return await register(data);
+      return register(data);
     },
     onSuccess: (data) => {
       console.log(data);
-      
+
       toast({
         title: 'Success! Your account has been created successfully.',
         description: 'Youll be redirected to the login page.',
         variant: 'success',
+        duration: import.meta.env.VITE_DELAY_DURATION || 3000,
       });
 
       setTimeout(() => {
         navigate('/login');
-      }, 3000);
+      }, import.meta.env.VITE_DELAY_DURATION || 3000);
     },
     onError: (error: ApiErrorResponse) => {
       console.error('Error during registration:', error);
 
       if (error.errors && error.errors.length > 0) {
         toast({
-          title: 'Invalid Input',
-          description: error.errors[0].message,
+          title: 'Invalid Email',
+          description:
+            'Please enter a valid email address ending in .com or .net. Other domains aren’t supported at this time. Thank you!',
           variant: 'destructive',
         });
       } else {
@@ -77,8 +77,8 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
-    mutation.mutate(data as z.infer<typeof RegisterSchema>);
+  const onSubmit = (data: User) => {
+    mutation.mutate(data as User);
   };
 
   return (

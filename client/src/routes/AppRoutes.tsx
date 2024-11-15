@@ -32,7 +32,13 @@ const routes = [
       },
       {
         path: 'new-post',
-        element: <CreatePostPage />,
+        element: <PrivateRoutes />,
+        children: [
+          {
+            index: true,
+            element: <CreatePostPage />,
+          },
+        ],
       },
       {
         path: 'post/:postSlug',

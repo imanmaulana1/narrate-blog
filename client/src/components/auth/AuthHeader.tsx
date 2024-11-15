@@ -7,7 +7,7 @@ const AuthHeader = ({ title, subtitle }: AuthHeaderProps) => {
       <CardTitle className='text-2xl font-semibold tracking-tight'>
         {title}
       </CardTitle>
-      <CardDescription>{subtitle}</CardDescription>
+      <CardDescription className='text-center'>{subtitle}</CardDescription>
     </CardHeader>
   );
 };

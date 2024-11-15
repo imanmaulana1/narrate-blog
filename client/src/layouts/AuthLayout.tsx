@@ -1,4 +1,3 @@
-import { Toaster } from '@/components/ui/toaster';
 import { Outlet } from 'react-router-dom';
 
 const AuthLayout = () => {
@@ -15,7 +14,6 @@ const AuthLayout = () => {
           </div>
           <div className='py-2 md:p-8'>
             <Outlet />
-            <Toaster />
           </div>
         </div>
       </main>

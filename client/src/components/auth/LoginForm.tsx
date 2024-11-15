@@ -1,13 +1,14 @@
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@/hooks/use-toast';
 import { LoginSchema } from '@/lib/validationSchema';
 import { login } from '@/services/api/authService';
-import { ApiErrorResponse, LoginResponse } from '@/types/global';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { z } from 'zod';
+import { LoginResponse } from '@/types/api/users/user';
+import { ApiErrorResponse } from '@/types/global';
+
 import {
   Form,
   FormControl,
@@ -20,8 +21,10 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 
+type User = z.infer<typeof LoginSchema>;
+
 const LoginForm = () => {
-  const form = useForm<z.infer<typeof LoginSchema>>({
+  const form = useForm<User>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       credential: '',
@@ -33,30 +36,27 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
 
-  const mutation = useMutation<
-    AxiosResponse<LoginResponse>,
-    ApiErrorResponse,
-    z.infer<typeof LoginSchema>
-  >({
-    mutationFn: async (data: z.infer<typeof LoginSchema>) => {
+  const mutation = useMutation<LoginResponse, ApiErrorResponse, User>({
+    mutationFn: (data: User) => {
       LoginSchema.parse(data);
 
-      return await login(data);
+      return login(data);
     },
     onSuccess: (data) => {
-      console.log(data.data);
+      const { token } = data.data;
 
-      localStorage.setItem('authToken', data.data.token.access_token);
+      localStorage.setItem('authToken', token.access_token);
 
       toast({
         title: 'Success! You have logged in successfully.',
         description: 'Youll be redirected to the home page.',
         variant: 'success',
+        duration: import.meta.env.VITE_DELAY_DURATION || 3000,
       });
 
       setTimeout(() => {
         navigate('/');
-      }, 3000);
+      }, import.meta.env.VITE_DELAY_DURATION || 3000);
     },
     onError: (error: ApiErrorResponse) => {
       console.error('Error during login:', error);
@@ -93,8 +93,8 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof LoginSchema>) => {
-    mutation.mutate(data as z.infer<typeof LoginSchema>);
+  const onSubmit = (data: User) => {
+    mutation.mutate(data as User);
   };
 
   return (
