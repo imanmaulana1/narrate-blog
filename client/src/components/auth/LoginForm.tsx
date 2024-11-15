@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +9,7 @@ import { login } from '@/services/api/authService';
 import { useMutation } from '@tanstack/react-query';
 import { LoginResponse } from '@/types/api/users/user';
 import { ApiErrorResponse } from '@/types/global';
-
+import { Eye, EyeOff } from 'lucide-react';
 import {
   Form,
   FormControl,
@@ -24,6 +25,8 @@ import { LoadingSpinner } from '../ui/LoadingSpinner';
 type User = z.infer<typeof LoginSchema>;
 
 const LoginForm = () => {
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+
   const form = useForm<User>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -127,11 +130,25 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type='password'
-                      placeholder='Enter your password'
-                    />
+                    <div className='relative'>
+                      <Input
+                        {...field}
+                        type={passwordVisibility ? 'text' : 'password'}
+                        placeholder='Enter your password'
+                      />
+                      <span
+                        className='absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground hover:text-foreground active:text-slate-400 '
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() =>
+                          setPasswordVisibility((prevState) => !prevState)
+                        }
+                        aria-label={
+                          passwordVisibility ? 'Hide password' : 'Show password'
+                        }
+                      >
+                        {passwordVisibility ? <Eye /> : <EyeOff />}
+                      </span>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { RegisterSchema } from '@/lib/validationSchema';
@@ -19,10 +20,15 @@ import {
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
+import { Eye, EyeOff } from 'lucide-react';
 
 type User = z.infer<typeof RegisterSchema>;
 
 const RegisterForm = () => {
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
+    useState(false);
+
   const form = useForm<User>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -126,11 +132,25 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    type='password'
-                    placeholder='Enter your password'
-                  />
+                  <div className='relative'>
+                    <Input
+                      {...field}
+                      type={passwordVisibility ? 'text' : 'password'}
+                      placeholder='Enter your password'
+                    />
+                    <span
+                      className='absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground hover:text-foreground active:text-slate-400 '
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() =>
+                        setPasswordVisibility((prevState) => !prevState)
+                      }
+                      aria-label={
+                        passwordVisibility ? 'Hide password' : 'Show password'
+                      }
+                    >
+                      {passwordVisibility ? <Eye /> : <EyeOff />}
+                    </span>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -143,11 +163,27 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    type='password'
-                    placeholder='Re-enter your password'
-                  />
+                  <div className='relative'>
+                    <Input
+                      {...field}  
+                      type={confirmPasswordVisibility ? 'text' : 'password'}
+                      placeholder='Re-enter your password'
+                    />
+                    <span
+                      className='absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground hover:text-foreground active:text-slate-400 '
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() =>
+                        setConfirmPasswordVisibility((prevState) => !prevState)
+                      }
+                      aria-label={
+                        confirmPasswordVisibility
+                          ? 'Hide password'
+                          : 'Show password'
+                      }
+                    >
+                      {confirmPasswordVisibility ? <Eye /> : <EyeOff />}
+                    </span>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

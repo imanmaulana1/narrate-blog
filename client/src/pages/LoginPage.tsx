@@ -5,7 +5,10 @@ const LoginPage = () => {
   return (
     <>
       <AuthLink to='/register' label='Register' />
-      <AuthWrapper title='Welcome Back!' subtitle='Please login to continue.'>
+      <AuthWrapper
+        title='Welcome Back to Narrate'
+        subtitle='Enter your username or email and password to continue.'
+      >
         <LoginForm />
       </AuthWrapper>
     </>
