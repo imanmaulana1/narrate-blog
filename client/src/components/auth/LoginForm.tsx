@@ -135,6 +135,7 @@ const LoginForm = () => {
                         {...field}
                         type={passwordVisibility ? 'text' : 'password'}
                         placeholder='Enter your password'
+                        autoComplete='off'
                       />
                       <span
                         className='absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground hover:text-foreground active:text-slate-400 '

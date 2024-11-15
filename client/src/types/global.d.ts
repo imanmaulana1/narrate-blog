@@ -17,6 +17,12 @@ export interface AuthWrapperProps extends AuthHeaderProps {
   children: React.ReactNode;
 }
 
+export type CarouselItem = {
+  image: string;
+  alt: string;
+  description: string;
+}
+
 export type ApiResponse<T> = {
   message: string;
   data: T;

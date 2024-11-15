@@ -5,11 +5,15 @@ import AuthHeader from './AuthHeader';
 
 const AuthWrapper = ({ title, subtitle, children }: AuthWrapperProps) => {
   return (
-    <Card className='min-h-screen flex flex-col items-center justify-center border-none shadow-none'>
+    <Card className='relative h-full flex flex-col items-center justify-center border-none shadow-none'>
       <AuthHeader title={title} subtitle={subtitle} />
-      <CardContent className='w-full max-w-[500px] mx-auto'>{children}</CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
+      <CardContent className='w-full max-w-[500px] mx-auto mb-6'>
+        {children}
+      </CardContent>
+      <CardFooter className='absolute bottom-0'>
+        <p className='text-sm text-muted-foreground '>
+          &copy; {new Date().getFullYear()} Narrate. All rights reserved.
+        </p>
       </CardFooter>
     </Card>
   );
