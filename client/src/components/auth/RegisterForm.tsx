@@ -80,6 +80,13 @@ const RegisterForm = () => {
           variant: 'destructive',
         });
       }
+
+      console.error('Error during registration:', error);
+      toast({
+        title: 'Oops! Something went wrong',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
 

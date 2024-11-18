@@ -8,7 +8,7 @@ export const PublicRoutes = () => {
   return !isAuthenticated() ? <Outlet /> : <Navigate to='/' />;
 };
 
-const isTokenExpired = () : boolean => {
+const isTokenExpired = (): boolean => {
   const token = localStorage.getItem('authToken');
 
   if (!token) {
@@ -27,7 +27,6 @@ const isTokenExpired = () : boolean => {
 export const PrivateRoutes = () => {
   if (isAuthenticated()) {
     if (!isTokenExpired()) {
-      console.log('hai');
       return <Outlet />;
     } else {
       localStorage.removeItem('authToken');

@@ -2,9 +2,9 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import { PublicRoutes, PrivateRoutes } from '@/routes/ProtectedRoutes';
 import RootLayout from '@/layouts/RootLayout';
-import UserLayout from '@/layouts/UserLayout';
 import MainLayout from '@/layouts/MainLayout';
 import AuthLayout from '@/layouts/AuthLayout';
+import SettingLayout from '@/layouts/SettingLayout';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
@@ -28,6 +28,14 @@ const routes = [
             path: 'category/:categorySlug',
             element: <div>Category Page</div>,
           },
+          {
+            path: 'search',
+            element: <div>Search Page</div>,
+          },
+          {
+            path: ':username',
+            element: <div>Profile Page</div>,
+          },
         ],
       },
       {
@@ -45,20 +53,27 @@ const routes = [
         element: <PostPage />,
       },
       {
-        path: ':username',
-        element: <UserLayout />,
+        element: <PrivateRoutes />,
         children: [
           {
-            index: true,
-            element: <div>Profile Page</div>,
-          },
-          {
             path: 'settings',
-            element: <PrivateRoutes />,
+            element: <SettingLayout />,
             children: [
               {
                 index: true,
-                element: <div>Settings Page</div>,
+                element: <div>Profile Page</div>,
+              },
+              {
+                path: 'profile',
+                element: <div>Profile Page</div>,
+              },
+              {
+                path: 'customization',
+                element: <div>Customization Page</div>,
+              },
+              {
+                path: 'account',
+                element: <div>Account Page</div>,
               },
             ],
           },

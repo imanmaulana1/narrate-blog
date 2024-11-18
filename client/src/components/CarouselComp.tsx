@@ -54,7 +54,7 @@ const CarouselComp = () => {
                   />
                 </div>
                 <CardContent className='p-6 md:p-8'>
-                  <h2 className='text-2xl text-center font-semibold mb-4'>
+                  <h2 className='text-xl text-center font-semibold mb-4'>
                     {item.description}
                   </h2>
                 </CardContent>

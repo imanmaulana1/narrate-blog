@@ -21,7 +21,7 @@ export type CarouselItem = {
   image: string;
   alt: string;
   description: string;
-}
+};
 
 export type ApiResponse<T> = {
   message: string;
@@ -46,4 +46,11 @@ export type DecodedToken = {
   avatar: string;
   iat: number;
   exp: number;
+};
+
+type HandleLogout = () => void;
+
+export type DropDownProps = {
+  currentUser: DecodedToken | null;
+  handleLogout: HandleLogout;
 };
