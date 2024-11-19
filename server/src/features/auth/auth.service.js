@@ -1,7 +1,7 @@
 import {
   NotFoundError,
   UnauthorizedError,
-  ValidationError,
+  BadRequestError,
 } from '../../utils/error.js';
 import { generateAuthToken } from '../../utils/generateAuthToken.js';
 import { checkPassword, hashPassword } from '../../utils/password.js';
@@ -17,11 +17,11 @@ const createUserService = async (data) => {
   const isUsernameExists = await findUserByUsername(data.username);
 
   if (isEmailExists) {
-    throw new ValidationError('Email already exists');
+    throw new BadRequestError('Email already exists');
   }
 
   if (isUsernameExists) {
-    throw new ValidationError('Username already exists');
+    throw new BadRequestError('Username already exists');
   }
 
   const hashedPassword = await hashPassword(data.password);

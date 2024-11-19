@@ -1,11 +1,13 @@
 import prisma from '../../config/database.js';
 import { DatabaseError, NotFoundError } from '../../utils/error.js';
 
-const findAllPosts = async ({ offset, limit }) => {
+const findAllPosts = async ({ offset, limit, orderBy, sortBy }) => {
+  console.log(offset)
   try {
     return await prisma.post.findMany({
       skip: offset,
       take: limit,
+      orderBy: [{ [sortBy]: orderBy }, { id: 'asc' }],
       select: {
         id: true,
         title: true,
@@ -39,12 +41,22 @@ const findAllPosts = async ({ offset, limit }) => {
       },
     });
   } catch (error) {
+    console.log(error.message);
     throw new DatabaseError(`Failed to get posts: ${error.message}`);
   }
 };
 
 const findPostBySlug = async (slug) => {
   try {
+    await prisma.post.update({
+      where: { slug },
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
+    });
+
     return await prisma.post.findUnique({
       where: {
         slug,
@@ -72,6 +84,7 @@ const findPostBySlug = async (slug) => {
             slug: true,
           },
         },
+        views: true,
         _count: {
           select: {
             comments: true,

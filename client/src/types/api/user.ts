@@ -35,6 +35,12 @@ type LoginResponseData = {
   token: TokenResponse;
 };
 
+type UserResponseData = {
+  data: User[];
+};
+
 export type LoginResponse = ApiResponse<LoginResponseData>;
 
 export type RegisterResponse = ApiResponse<User>;
+
+export type UsersResponse = ApiResponse<UserResponseData>;

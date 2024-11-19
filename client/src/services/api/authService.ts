@@ -1,6 +1,11 @@
 import { api } from '@/lib/axiosInstance';
 import handleApiError from '@/lib/apiErrorHandler';
-import { LoginData, LoginResponse, RegisterData, RegisterResponse } from '@/types/api/users/user';
+import {
+  LoginData,
+  LoginResponse,
+  RegisterData,
+  RegisterResponse,
+} from '@/types/api/user';
 
 export const register = async (
   data: RegisterData

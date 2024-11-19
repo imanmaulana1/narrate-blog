@@ -54,3 +54,32 @@ export type DropDownProps = {
   currentUser: DecodedToken | null;
   handleLogout: HandleLogout;
 };
+
+export type PostHeaderProps = {
+  order: 'asc' | 'desc';
+  sort: 'created_at' | 'views';
+  handleOrderChange: (
+    newOrder: 'asc' | 'desc',
+    newSort: 'created_at' | 'views'
+  ) => void;
+};
+
+export type PostPaginationProps = {
+  page: number;
+  handlePageChange: (
+    e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
+    newPage: number
+  ) => void;
+  posts:
+    | {
+        data: {
+          data: Post[];
+          pagination: {
+            totalPage: number;
+            currentPage: number;
+            has_more: boolean;
+          };
+        };
+      }
+    | undefined;
+};

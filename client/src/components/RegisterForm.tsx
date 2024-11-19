@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@/hooks/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import { register } from '@/services/api/authService';
-import { RegisterResponse } from '@/types/api/users/user';
+import { RegisterResponse } from '@/types/api/user';
 import { ApiErrorResponse } from '@/types/global';
 import {
   Form,
@@ -16,10 +16,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import { LoadingSpinner } from '../ui/LoadingSpinner';
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Eye, EyeOff } from 'lucide-react';
 
 type User = z.infer<typeof RegisterSchema>;

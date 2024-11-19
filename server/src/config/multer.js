@@ -1,7 +1,7 @@
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ValidationError } from '../utils/error.js';
+import { BadRequestError } from '../utils/error.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,7 +33,7 @@ const multerConfig = multer({
       cb(null, true);
     } else {
       cb(
-        new ValidationError('Only .png, .jpg, and .jpeg files are allowed!'),
+        new BadRequestError('Only .png, .jpg, and .jpeg files are allowed!'),
         false
       );
     }

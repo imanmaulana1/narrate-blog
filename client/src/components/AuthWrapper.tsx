@@ -1,7 +1,6 @@
-import { Card, CardContent, CardFooter } from '../ui/card';
-
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import AuthHeader from '@/components/AuthHeader';
 import { AuthWrapperProps } from '@/types/global';
-import AuthHeader from './AuthHeader';
 
 const AuthWrapper = ({ title, subtitle, children }: AuthWrapperProps) => {
   return (

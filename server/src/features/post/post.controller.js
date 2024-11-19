@@ -13,16 +13,23 @@ import {
 
 // CRUD POST
 const getAllPosts = async (req, res, next) => {
-  let { page, limit } = req.query;
+  let { page, order, sort } = req.query;
 
-  const parsedPage = Math.max(parseInt(page), 1);
-  const parsedLimit = Math.min(Math.max(parseInt(limit), 1), 100);
-  const offset = (parseInt(parsedPage) - 1) * parsedLimit || 0;
+  const parsedPage = Math.max(Number(page) || 1, 1);
+  const limit = 10;
+  const offset = (parseInt(parsedPage) - 1) * limit;
+  const validOrders = ['asc', 'desc'];
+  const validSorts = ['created_at', 'views'];
+
+  const orderBy = validOrders.includes(order) ? order : 'asc';
+  const sortBy = validSorts.includes(sort) ? sort : 'created_at';
 
   const options = {
     page: parsedPage,
-    limit: parsedLimit,
+    limit,
     offset,
+    orderBy,
+    sortBy,
   };
 
   try {
@@ -129,11 +136,11 @@ const likePost = async (req, res, next) => {
   const { id: postId } = req.params;
 
   try {
-    const response = await likePostService(userId, postId);
+    const { message, data } = await likePostService(userId, postId);
 
     res.send({
-      message: 'Post liked successfully',
-      data: response,
+      message,
+      data,
     });
   } catch (error) {
     next(error);

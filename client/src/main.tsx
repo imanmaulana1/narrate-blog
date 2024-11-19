@@ -7,7 +7,14 @@ import { RouterProvider } from 'react-router-dom';
 import router from './routes/AppRoutes.tsx';
 import { Toaster } from './components/ui/toaster.tsx';
 
-const queryClient = new QueryClient({});
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+    },
+  },
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

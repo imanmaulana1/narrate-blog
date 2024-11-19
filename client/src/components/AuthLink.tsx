@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { buttonVariants } from '../ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { AuthLinkProps } from '@/types/global';
 import { ChevronLeft } from 'lucide-react';
 

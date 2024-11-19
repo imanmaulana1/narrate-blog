@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { LoginSchema } from '@/lib/validationSchema';
 import { login } from '@/services/api/authService';
 import { useMutation } from '@tanstack/react-query';
-import { LoginResponse } from '@/types/api/users/user';
+import { LoginResponse } from '@/types/api/user';
 import { ApiErrorResponse } from '@/types/global';
 import { Eye, EyeOff } from 'lucide-react';
 import {
@@ -17,10 +17,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import { LoadingSpinner } from '../ui/LoadingSpinner';
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 type User = z.infer<typeof LoginSchema>;
 

@@ -20,7 +20,16 @@ import {
 } from './post.repository.js';
 
 const getAllPostsService = async (options) => {
-  const count = await countPosts();
+  const [count, posts] = await Promise.all([
+    countPosts(),
+    findAllPosts({
+      offset: options.offset,
+      limit: options.limit || 10,
+      orderBy: options.orderBy,
+      sortBy: options.sortBy,
+    }),
+  ]);
+
   const totalPage = Math.ceil(count / options.limit);
 
   options.total = count;
@@ -34,12 +43,7 @@ const getAllPostsService = async (options) => {
     offset: options.offset || 0,
   };
 
-  const posts = await findAllPosts({
-    offset: pagination.offset,
-    limit: pagination.limit,
-  });
-
-  const data = posts.map((post) => {
+  const data = posts?.map((post) => {
     return {
       ...post,
       estimated_read_time: calculatedReadTime(post.content),

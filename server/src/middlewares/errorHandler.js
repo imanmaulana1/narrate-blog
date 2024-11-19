@@ -1,9 +1,9 @@
 import {
+  BadRequestError,
   DatabaseError,
   ForbiddenError,
   NotFoundError,
   UnauthorizedError,
-  ValidationError,
 } from '../utils/error.js';
 
 export const errorHandler = (error, req, res, next) => {
@@ -20,7 +20,7 @@ export const errorHandler = (error, req, res, next) => {
     });
   }
 
-  if (error instanceof ValidationError) {
+  if (error instanceof BadRequestError) {
     return res.status(error.statusCode).json({
       success: false,
       message: error.message,
