@@ -3,18 +3,14 @@ import { usePosts } from '@/hooks/use-post';
 import PostHeader from '@/components/PostHeader';
 import PostCard from '@/components/PostCard';
 import PostPagination from '@/components/PostPagination';
+import PostCardSkeleton from '@/components/PostCardSkeleton';
 
 const HomePage = () => {
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [sort, setSort] = useState<'created_at' | 'views'>('created_at');
   const [page, setPage] = useState(1);
 
-  const { data: posts } = usePosts(page, sort, order);
-
-  console.log(posts?.data);
-
-  console.log(posts?.data.pagination.totalPage);
-  console.log(posts?.data.pagination.currentPage);
+  const { data: posts, isLoading } = usePosts(page, sort, order);
 
   const handleOrderChange = (
     newOrder: 'asc' | 'desc',
@@ -41,6 +37,9 @@ const HomePage = () => {
       />
 
       <div className='flex flex-col gap-8 my-8'>
+        {isLoading &&
+          Array.from({ length: 3 }).map((_, i) => <PostCardSkeleton key={i} />)}
+
         {posts?.data?.data?.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}

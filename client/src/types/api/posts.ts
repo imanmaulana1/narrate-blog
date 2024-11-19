@@ -23,6 +23,7 @@ export type Post = {
     comments: number;
     likes: number;
   };
+  short_content: string;
   estimated_read_time: string;
 };
 

@@ -46,6 +46,7 @@ const getAllPostsService = async (options) => {
   const data = posts?.map((post) => {
     return {
       ...post,
+      short_content: truncateText(post.content, 100),
       estimated_read_time: calculatedReadTime(post.content),
     };
   });
@@ -177,6 +178,11 @@ const calculatedReadTime = (content) => {
   const minutes = Math.ceil(words / wordPerMinute);
 
   return `${minutes} min read`;
+};
+
+const truncateText = (text, maxLength) => {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + '...';
 };
 
 export {

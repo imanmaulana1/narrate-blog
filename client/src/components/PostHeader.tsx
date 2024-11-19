@@ -9,21 +9,6 @@ const PostHeader = ({ order, sort, handleOrderChange }: PostHeaderProps) => {
     >
       <div
         className={`${
-          order === 'asc' && sort === 'created_at' && 'border-b border-black'
-        } pb-2`}
-      >
-        <Button
-          variant={null}
-          className={`font-normal ${
-            order === 'asc' ? 'text-black' : 'text-muted-foreground'
-          }  hover:text-black`}
-          onClick={() => handleOrderChange('asc', 'created_at')}
-        >
-          Recent
-        </Button>
-      </div>
-      <div
-        className={`${
           order === 'desc' && sort === 'created_at' && 'border-b border-black'
         } pb-2`}
       >
@@ -35,6 +20,21 @@ const PostHeader = ({ order, sort, handleOrderChange }: PostHeaderProps) => {
               : 'text-muted-foreground'
           }  hover:text-black`}
           onClick={() => handleOrderChange('desc', 'created_at')}
+        >
+          Recent
+        </Button>
+      </div>
+      <div
+        className={`${
+          order === 'asc' && sort === 'created_at' && 'border-b border-black'
+        } pb-2`}
+      >
+        <Button
+          variant={null}
+          className={`font-normal ${
+            order === 'asc' ? 'text-black' : 'text-muted-foreground'
+          }  hover:text-black`}
+          onClick={() => handleOrderChange('asc', 'created_at')}
         >
           Latest
         </Button>

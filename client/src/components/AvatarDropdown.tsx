@@ -11,14 +11,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut, Settings, SquarePen, User } from 'lucide-react';
 import { DropDownProps } from '@/types/global';
 
-const DropdownComp = ({ currentUser, handleLogout }: DropDownProps) => {
+const AvatarDropdown = ({ currentUser, handleLogout }: DropDownProps) => {
   const navigate = useNavigate();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className='cursor-pointer'>
         <Avatar className='h-8 w-8'>
           <AvatarImage src={currentUser?.avatar} alt='Profile Picture' />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>
+            {currentUser?.username.charAt(0).toUpperCase()}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='min-w-[250px] px-4 py-2'>
@@ -39,7 +41,10 @@ const DropdownComp = ({ currentUser, handleLogout }: DropDownProps) => {
           </DropdownMenuItem>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => navigate(`@${currentUser?.username}`)} className='cursor-pointer my-2 text-zinc-600 hover:text-black'>
+        <DropdownMenuItem
+          onSelect={() => navigate(`@${currentUser?.username}`)}
+          className='cursor-pointer my-2 text-zinc-600 hover:text-black'
+        >
           <div className='flex items-center gap-4'>
             <User size={20} />
             <p>Profile</p>
@@ -54,7 +59,7 @@ const DropdownComp = ({ currentUser, handleLogout }: DropDownProps) => {
             <p>Settings</p>
           </div>
         </DropdownMenuItem>
-        <DropdownMenuSeparator className='mt-4'/>
+        <DropdownMenuSeparator className='mt-4' />
         <DropdownMenuItem
           onSelect={() => handleLogout()}
           className='cursor-pointer text-zinc-600 hover:text-black'
@@ -69,4 +74,4 @@ const DropdownComp = ({ currentUser, handleLogout }: DropDownProps) => {
   );
 };
 
-export default DropdownComp;
+export default AvatarDropdown;

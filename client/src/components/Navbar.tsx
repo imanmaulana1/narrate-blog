@@ -1,10 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
-import useAuthUser from '@/hooks/use-auth-user';
+import { useAuthUser } from '@/hooks/use-auth-user';
 import isAuthenticated from '@/lib/privateRouteHandler';
-import DropdownComp from './DropdownComp';
-import { Button, buttonVariants } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import AvatarDropdown from '@/components/AvatarDropdown';
 import { Search } from 'lucide-react';
 
 const Navbar = () => {
@@ -60,7 +60,7 @@ const Navbar = () => {
                 Write a Story
               </Link>
             </div>
-            <DropdownComp
+            <AvatarDropdown
               currentUser={currentUser}
               handleLogout={handleLogout}
             />
