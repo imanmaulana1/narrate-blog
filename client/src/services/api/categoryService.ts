@@ -1,6 +1,9 @@
 import handleApiError from '@/lib/apiErrorHandler';
 import { api } from '@/lib/axiosInstance';
-import { CategoriesResponse, Category } from '@/types/api/category';
+import {
+  CategoriesResponse,
+  CategoryDetailResponse,
+} from '@/types/api/category';
 
 export const getCategories = async (): Promise<CategoriesResponse> => {
   try {
@@ -11,7 +14,9 @@ export const getCategories = async (): Promise<CategoriesResponse> => {
   }
 };
 
-export const getCategory = async (slug: string): Promise<Category> => {
+export const getCategoryBySlug = async (
+  slug: string
+): Promise<CategoryDetailResponse> => {
   try {
     return await api.get(`/categories/${slug}`);
   } catch (error) {

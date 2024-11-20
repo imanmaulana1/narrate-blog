@@ -16,7 +16,32 @@ const findCategoryBySlug = async (slug) => {
         slug,
       },
       include: {
-        posts: true,
+        posts: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                name: true,
+                username: true,
+                email: true,
+                avatar: true,
+              },
+            },
+            category: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+              },
+            },
+            _count: {
+              select: {
+                comments: true,
+                likes: true,
+              },
+            },
+          },
+        },
       },
     });
   } catch (error) {

@@ -9,7 +9,7 @@ const PostRecommended = () => {
 
   return (
     <section>
-      <h2>Recommended Posts</h2>
+      <h2>Staff Picks</h2>
 
       <div className='mt-4'>
         {isLoading &&

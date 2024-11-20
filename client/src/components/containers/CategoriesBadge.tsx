@@ -7,7 +7,7 @@ const CategoriesBadge = () => {
   console.log(categories);
   return (
     <section>
-      <h2>Topics</h2>
+      <h2>Recommended Topics</h2>
 
       <div className='mt-4 flex flex-wrap gap-2'>
         {categories?.data?.data.map((category) => (

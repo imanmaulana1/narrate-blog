@@ -27,6 +27,7 @@ const getCategoryBySlug = async (req, res, next) => {
       data: category,
     });
   } catch (error) {
+    console.log(error)
     next(error);
   }
 };

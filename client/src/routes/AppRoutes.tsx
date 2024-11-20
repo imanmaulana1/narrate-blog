@@ -11,6 +11,7 @@ import RegisterPage from '@/pages/RegisterPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import PostPage from '@/pages/PostPage';
 import CreatePostPage from '@/pages/CreatePostPage';
+import CategoryPage from '@/pages/CategoryPage';
 
 const routes = [
   {
@@ -26,7 +27,7 @@ const routes = [
           },
           {
             path: 'category/:categorySlug',
-            element: <div>Category Page</div>,
+            element: <CategoryPage />,
           },
           {
             path: 'search',
