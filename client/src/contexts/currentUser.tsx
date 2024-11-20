@@ -1,30 +1,38 @@
 import { createContext, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from '@/types/global';
+import { jwtDecode } from 'jwt-decode';
 
-const AuthContext = createContext<DecodedToken | null>(null);
+interface AuthContextType {
+  user: DecodedToken | null;
+  setUser: (user: DecodedToken | null) => void;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<DecodedToken | null>(null);
 
+  const logout = () => {
+    localStorage.removeItem('authToken');
+    setUser(null);
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      try {
-        const decoded = jwtDecode<DecodedToken>(token);
-        const isExpired = decoded.exp && decoded.exp * 1000 < Date.now();
-        if (!isExpired) {
-          setUser(decoded);
-        } else {
-          localStorage.removeItem('authToken');
-        }
-      } catch {
-        setUser(null);
-      }
+      const decodedUser = jwtDecode<DecodedToken>(token);
+      setUser(decodedUser);
     }
   }, []);
 
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+  const value: AuthContextType = {
+    user,
+    setUser,
+    logout,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;

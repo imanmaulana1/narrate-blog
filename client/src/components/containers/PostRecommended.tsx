@@ -8,22 +8,22 @@ const PostRecommended = () => {
   const { data: post, isLoading } = useRecommendedPosts();
 
   return (
-    <div>
+    <section>
       <h2>Recommended Posts</h2>
 
       <div className='mt-4'>
         {isLoading &&
-          Array.from({ length: 3 }).map((_, i) => (
-            <PostRecommendedCardSkeleton key={i} />
+          Array.from({ length: 3 }).map((_, index) => (
+            <PostRecommendedCardSkeleton key={index} />
           ))}
 
         {post?.data?.data.map((post) => (
-          <Link to={`post/${post.slug}`}>
-            <PostRecommendedCard key={post.id} post={post} />
+          <Link to={`post/${post.slug}`} key={post.id}>
+            <PostRecommendedCard post={post} />
           </Link>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

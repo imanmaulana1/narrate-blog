@@ -8,7 +8,7 @@ import { LoginSchema } from '@/lib/validationSchema';
 import { login } from '@/services/api/authService';
 import { useMutation } from '@tanstack/react-query';
 import { LoginResponse } from '@/types/api/user';
-import { ApiErrorResponse } from '@/types/global';
+import { ApiErrorResponse, DecodedToken } from '@/types/global';
 import { Eye, EyeOff } from 'lucide-react';
 import {
   Form,
@@ -21,11 +21,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { useAuthUser } from '@/hooks/use-auth-user';
+import { jwtDecode } from 'jwt-decode';
 
 type User = z.infer<typeof LoginSchema>;
 
 const LoginForm = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const { setUser } = useAuthUser();
 
   const form = useForm<User>({
     resolver: zodResolver(LoginSchema),
@@ -49,6 +52,8 @@ const LoginForm = () => {
       const { token } = data.data;
 
       localStorage.setItem('authToken', token.access_token);
+      const decode = jwtDecode<DecodedToken>(token.access_token);
+      setUser(decode);
 
       toast({
         title: 'Success! You have logged in successfully.',

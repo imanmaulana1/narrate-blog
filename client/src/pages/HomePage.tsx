@@ -4,11 +4,13 @@ import PostHeader from '@/components/containers/PostHeader';
 import PostCard from '@/components/fragments/PostCard';
 import PostPagination from '@/components/fragments/PostPagination';
 import PostCardSkeleton from '@/components/PostCardSkeleton';
+import { useAuthUser } from '@/hooks/use-auth-user';
 
 const HomePage = () => {
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [sort, setSort] = useState<'created_at' | 'views'>('created_at');
   const [page, setPage] = useState(1);
+  const { user } = useAuthUser();
 
   const { data: posts, isLoading } = usePosts(page, sort, order);
 
@@ -41,9 +43,7 @@ const HomePage = () => {
           Array.from({ length: 3 }).map((_, i) => <PostCardSkeleton key={i} />)}
 
         {posts?.data?.data?.map((post) => (
-          
-            <PostCard key={post.id} post={post} />
-         
+          <PostCard key={post.id} post={post} user={user} />
         ))}
       </div>
 

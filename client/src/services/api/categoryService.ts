@@ -4,8 +4,7 @@ import { CategoriesResponse, Category } from '@/types/api/category';
 
 export const getCategories = async (): Promise<CategoriesResponse> => {
   try {
-    const { data } = await api.get(`/categories`);
-    return data;
+    return await api.get(`/categories`);
   } catch (error) {
     const apiError = handleApiError(error);
     throw apiError;

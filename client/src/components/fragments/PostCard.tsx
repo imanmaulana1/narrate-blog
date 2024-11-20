@@ -17,7 +17,6 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { badgeVariants } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Post } from '@/types/api/posts';
-import { useAuthUser } from '@/hooks/use-auth-user';
 import { dateFormatted, dateFormattedFromNow } from '@/utils/helpers';
 import { Link } from 'react-router-dom';
 import {
@@ -32,10 +31,15 @@ import {
   Share2,
   Timer,
 } from 'lucide-react';
+import { DecodedToken } from '@/types/global';
 
-const PostCard = ({ post }: { post: Post }) => {
-  const user = useAuthUser();
-
+const PostCard = ({
+  post,
+  user,
+}: {
+  post: Post;
+  user: DecodedToken | null;
+}) => {
   return (
     <article className='border-b border-border/50 grid grid-cols-1  md:grid-cols-[65%_1fr]  overflow-hidden'>
       <Card className='border-none shadow-none bg-transparent'>

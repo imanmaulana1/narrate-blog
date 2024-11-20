@@ -13,6 +13,7 @@ import { DropDownProps } from '@/types/global';
 
 const AvatarDropdown = ({ currentUser, handleLogout }: DropDownProps) => {
   const navigate = useNavigate();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className='cursor-pointer'>
@@ -61,7 +62,7 @@ const AvatarDropdown = ({ currentUser, handleLogout }: DropDownProps) => {
         </DropdownMenuItem>
         <DropdownMenuSeparator className='mt-4' />
         <DropdownMenuItem
-          onSelect={() => handleLogout()}
+          onSelect={handleLogout}
           className='cursor-pointer text-zinc-600 hover:text-black'
         >
           <div className='flex items-center gap-4'>

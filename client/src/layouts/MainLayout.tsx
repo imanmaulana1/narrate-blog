@@ -4,7 +4,7 @@ import Sidebar from '@/components/containers/Sidebar';
 const MainLayout = () => {
   return (
     <main className='container'>
-      <div className='container grid grid-cols-1 px-0 lg:grid-cols-[80%_1fr]'>
+      <div className='container grid grid-cols-1 px-0 lg:grid-cols-[70%_1fr] xl:grid-cols-[80%_1fr]'>
         <div className='border-r-0 lg:border-r px-4 py-6'>
           <Outlet />
         </div>

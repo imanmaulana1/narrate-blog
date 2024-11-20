@@ -8,11 +8,11 @@ import AvatarDropdown from '@/components/fragments/AvatarDropdown';
 import { Search } from 'lucide-react';
 
 const Navbar = () => {
-  const currentUser = useAuthUser();
+  const { user, logout } = useAuthUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    logout();
     navigate('/login');
   };
   return (
@@ -60,10 +60,7 @@ const Navbar = () => {
                 Write a Story
               </Link>
             </div>
-            <AvatarDropdown
-              currentUser={currentUser}
-              handleLogout={handleLogout}
-            />
+            <AvatarDropdown currentUser={user} handleLogout={handleLogout} />
           </>
         ) : (
           <Button>
