@@ -2,7 +2,6 @@ import prisma from '../../config/database.js';
 import { DatabaseError, NotFoundError } from '../../utils/error.js';
 
 const findAllPosts = async ({ offset, limit, orderBy, sortBy }) => {
-  console.log(offset)
   try {
     return await prisma.post.findMany({
       skip: offset,
@@ -107,6 +106,15 @@ const findPostById = async (id) => {
     });
   } catch (error) {
     throw new DatabaseError('Failed to get post');
+  }
+};
+
+const randomPosts = async () => {
+  try {
+    return await prisma.$queryRaw`SELECT * FROM posts ORDER BY RANDOM() LIMIT 3`;
+  } catch (error) {
+    console.log(error);
+    throw new DatabaseError('Failed to get posts');
   }
 };
 
@@ -311,4 +319,5 @@ export {
   findCommentById,
   updateExistingPost,
   updateComment,
+  randomPosts
 };

@@ -9,6 +9,7 @@ import {
   createCommentService,
   deleteCommentService,
   updateCommentService,
+  getRandomPostsService,
 } from './post.service.js';
 
 // CRUD POST
@@ -57,6 +58,19 @@ const getPostBySlug = async (req, res, next) => {
 
     res.send({
       message: 'Post fetched successfully',
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const randomPosts = async (req, res, next) => {
+  try {
+    const data = await getRandomPostsService();
+
+    res.send({
+      message: 'Posts fetched successfully',
       data,
     });
   } catch (error) {
@@ -220,6 +234,7 @@ export {
   getPostBySlug,
   updatePost,
   updateComment,
+  randomPosts,
   removePost,
   removeComment,
   likePost,

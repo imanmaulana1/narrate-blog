@@ -10,6 +10,7 @@ import {
   createComment,
   updateComment,
   removeComment,
+  randomPosts,
 } from './post.controller.js';
 import { authenticateJWT } from '../../middlewares/verifyToken.js';
 import verifyPostAuthor from '../../middlewares/verifyPostAuthor.js';
@@ -25,6 +26,7 @@ const router = Router();
 
 // CRUD POST
 router.get('/', getAllPosts);
+router.get('/random', randomPosts);
 router.post(
   '/',
   authenticateJWT,

@@ -17,6 +17,7 @@ import {
   findCommentById,
   deleteComment,
   updateComment,
+  randomPosts,
 } from './post.repository.js';
 
 const getAllPostsService = async (options) => {
@@ -73,6 +74,10 @@ const getPostBySlugService = async (slug) => {
   };
 
   return data;
+};
+
+const getRandomPostsService = async () => {
+  return await randomPosts();
 };
 
 const createPostService = async (userId, data) => {
@@ -195,6 +200,7 @@ export {
   getPostByIdService,
   getPostBySlugService,
   getCommentByIdService,
+  getRandomPostsService,
   likePostService,
   updatePostService,
   updateCommentService,
