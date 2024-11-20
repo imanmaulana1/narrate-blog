@@ -83,7 +83,7 @@ const PostCard = ({ post }: { post: Post }) => {
           <CardTitle className='mt-2'>
             <Link
               to={`/post/${post.slug}`}
-              className='text-lg font-bold text-foreground transition-colors line-clamp-2'
+              className='text-lg font-bold text-foreground transition-colors line-clamp-2 hover:underline'
             >
               {post.title}
             </Link>

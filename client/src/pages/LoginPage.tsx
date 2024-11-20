@@ -1,6 +1,6 @@
-import AuthWrapper from '@/components/AuthWrapper';
-import AuthLink from '@/components/AuthLink';
-import LoginForm from '@/components/LoginForm';
+import AuthWrapper from '@/components/containers/AuthWrapper';
+import AuthLink from '@/components/fragments/AuthLink';
+import LoginForm from '@/components/fragments/LoginForm';
 const LoginPage = () => {
   return (
     <>

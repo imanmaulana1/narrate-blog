@@ -1,6 +1,6 @@
-import AuthWrapper from '@/components/AuthWrapper';
-import AuthLink from '@/components/AuthLink';
-import RegisterForm from '@/components/RegisterForm';
+import AuthWrapper from '@/components/containers/AuthWrapper';
+import AuthLink from '@/components/fragments/AuthLink';
+import RegisterForm from '@/components/fragments/RegisterForm';
 
 const RegisterPage = () => {
   return (

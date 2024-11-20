@@ -4,7 +4,7 @@ import isAuthenticated from '@/lib/privateRouteHandler';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AvatarDropdown from '@/components/AvatarDropdown';
+import AvatarDropdown from '@/components/fragments/AvatarDropdown';
 import { Search } from 'lucide-react';
 
 const Navbar = () => {

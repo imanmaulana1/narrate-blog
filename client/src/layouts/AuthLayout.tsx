@@ -1,4 +1,4 @@
-import CarouselComp from '@/components/CarouselComp';
+import CarouselComp from '@/components/containers/CarouselComp';
 import { Outlet } from 'react-router-dom';
 
 const AuthLayout = () => {

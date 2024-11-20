@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+import Sidebar from '@/components/containers/Sidebar';
 
 const MainLayout = () => {
   return (
@@ -7,7 +8,7 @@ const MainLayout = () => {
         <div className='border-r-0 lg:border-r px-4 py-6'>
           <Outlet />
         </div>
-        <aside className='hidden lg:block px-4 py-6'>Sidebar</aside>
+        <Sidebar />
       </div>
     </main>
   );

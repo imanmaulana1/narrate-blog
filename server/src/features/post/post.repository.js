@@ -111,7 +111,31 @@ const findPostById = async (id) => {
 
 const randomPosts = async () => {
   try {
-    return await prisma.$queryRaw`SELECT * FROM posts ORDER BY RANDOM() LIMIT 3`;
+    const data =
+      await prisma.$queryRaw`SELECT * FROM posts ORDER BY RANDOM() LIMIT 3`;
+
+    const postIds = data.map((post) => post.id);
+
+    return await prisma.post.findMany({
+      where: { id: { in: postIds } },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            avatar: true,
+          },
+        },
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+      },
+    });
   } catch (error) {
     console.log(error);
     throw new DatabaseError('Failed to get posts');
@@ -319,5 +343,5 @@ export {
   findCommentById,
   updateExistingPost,
   updateComment,
-  randomPosts
+  randomPosts,
 };

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { usePosts } from '@/hooks/use-post';
-import PostHeader from '@/components/PostHeader';
-import PostCard from '@/components/PostCard';
-import PostPagination from '@/components/PostPagination';
+import PostHeader from '@/components/containers/PostHeader';
+import PostCard from '@/components/fragments/PostCard';
+import PostPagination from '@/components/fragments/PostPagination';
 import PostCardSkeleton from '@/components/PostCardSkeleton';
 
 const HomePage = () => {
@@ -41,7 +41,9 @@ const HomePage = () => {
           Array.from({ length: 3 }).map((_, i) => <PostCardSkeleton key={i} />)}
 
         {posts?.data?.data?.map((post) => (
-          <PostCard key={post.id} post={post} />
+          
+            <PostCard key={post.id} post={post} />
+         
         ))}
       </div>
 

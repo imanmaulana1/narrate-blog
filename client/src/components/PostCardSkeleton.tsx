@@ -9,22 +9,22 @@ const PostCardSkeleton = () => {
             <Skeleton className='h-12 w-12 rounded-full' />
             <div className='space-y-2'>
               <Skeleton className='h-4 w-[150px]' />
-              <Skeleton className='h-3 w-[100px]' />
+              <Skeleton className='h-4 w-[100px]' />
             </div>
           </div>
           <Skeleton className='h-4 w-[60px]' />
         </div>
 
         <div className='space-y-2 mt-4'>
-          <Skeleton className='h-3 w-[80%]' />
+          <Skeleton className='h-4 w-[80%]' />
 
           <div className='space-y-2 mt-4'>
-            <Skeleton className='h-2 w-full' />
-            <Skeleton className='h-2 w-[95%]' />
+            <Skeleton className='h-4 w-full' />
+            <Skeleton className='h-4 w-[95%]' />
           </div>
         </div>
 
-        <div className='flex justify-between items-center border-t border-border/30 pt-3'>
+        <div className='flex justify-between items-center border-t border-border/30'>
           <div className='flex items-center gap-3'>
             <Skeleton className='h-3 w-[100px]' />
             <Skeleton className='h-3 w-[80px]' />

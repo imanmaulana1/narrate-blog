@@ -15,3 +15,21 @@ export const getPosts = async ({
     throw apiError;
   }
 };
+
+export const recommendPosts = async (): Promise<PostResponse> => {
+  try {
+    return await api.get('/posts/random');
+  } catch (error) {
+    const apiError = handleApiError(error);
+    throw apiError;
+  }
+};
+
+export const getDetailPost = async (slug: string): Promise<PostResponse> => {
+  try {
+    return await api.get(`/posts/${slug}`);
+  } catch (error) {
+    const apiError = handleApiError(error);
+    throw apiError;
+  }
+};
