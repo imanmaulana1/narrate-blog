@@ -143,7 +143,7 @@ const likePostService = async (userId, postId) => {
     const createdLike = await createLikePost(postId, userId);
     return {
       message: 'Post liked successfully',
-      data: createdLike,
+      data: { ...createdLike, hasLiked: true },
     };
   }
 
@@ -151,7 +151,7 @@ const likePostService = async (userId, postId) => {
 
   return {
     message: 'Post unliked successfully',
-    data: deletedLike,
+    data: { ...deletedLike, hasLiked: false },
   };
 };
 
@@ -177,8 +177,6 @@ const checkSlugUnique = async (slug) => {
 
   return slug;
 };
-
-
 
 export {
   createPostService,

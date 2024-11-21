@@ -37,6 +37,11 @@ const findAllPosts = async ({ offset, limit, orderBy, sortBy }) => {
             likes: true,
           },
         },
+        likes: {
+          select: {
+            user_id: true,
+          },
+        },
       },
     });
   } catch (error) {
@@ -88,6 +93,11 @@ const findPostBySlug = async (slug) => {
           select: {
             comments: true,
             likes: true,
+          },
+        },
+        likes: {
+          select: {
+            user_id: true,
           },
         },
       },

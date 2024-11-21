@@ -40,6 +40,12 @@ const findCategoryBySlug = async (slug) => {
                 likes: true,
               },
             },
+
+            likes: {
+              select: {
+                user_id: true,
+              },
+            },
           },
         },
       },

@@ -3,7 +3,7 @@ import {
   getPosts,
   recommendPosts,
 } from '@/services/api/postService';
-import { PostResponse } from '@/types/api/posts';
+import { PostDetailResponse, PostResponse } from '@/types/api/posts';
 import { ApiErrorResponse } from '@/types/global';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
@@ -37,7 +37,7 @@ const useRecommendedPosts = () => {
 
 const useDetailPost = (slug: string) => {
   const { data, isLoading, isError, error } = useQuery<
-    PostResponse,
+    PostDetailResponse,
     ApiErrorResponse
   >({
     queryKey: ['detailPost', slug],

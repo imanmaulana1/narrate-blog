@@ -32,6 +32,7 @@ import {
   Timer,
 } from 'lucide-react';
 import { DecodedToken } from '@/types/global';
+import ToolTipComp from './ToolTipComp';
 
 const PostCard = ({
   post,
@@ -40,6 +41,8 @@ const PostCard = ({
   post: Post;
   user: DecodedToken | null;
 }) => {
+  const hasLiked = post?.likes.some((like) => like.user_id === user?.id);
+
   return (
     <article className='border-b border-border/50 grid grid-cols-1  md:grid-cols-[65%_1fr]  overflow-hidden'>
       <Card className='border-none shadow-none bg-transparent'>
@@ -106,15 +109,32 @@ const PostCard = ({
             </div>
 
             <div className='flex items-center gap-2'>
-              <div className='flex items-center gap-1'>
-                <MessageCircle size={14} className='text-primary/70' />
-                <span className='text-xs'>{post._count?.comments || 0}</span>
-              </div>
-
-              <div className='flex items-center gap-1'>
-                <Heart size={14} className='text-primary/70' />
-                <span className='text-xs'>{post._count?.likes || 0}</span>
-              </div>
+              <ToolTipComp
+                trigger={
+                  <div className='flex items-center gap-1'>
+                    <Heart
+                      size={14}
+                      fill={hasLiked ? 'red' : 'none'}
+                      className='text-primary/70'
+                    />
+                    <span className='text-xs'>{post._count?.likes || 0}</span>
+                  </div>
+                }
+                content={
+                  hasLiked ? <p>You're liked this post</p> : <p>Likes</p>
+                }
+              />
+              <ToolTipComp
+                trigger={
+                  <div className='flex items-center gap-1'>
+                    <MessageCircle size={14} className='text-primary/70' />
+                    <span className='text-xs'>
+                      {post._count?.comments || 0}
+                    </span>
+                  </div>
+                }
+                content={<p>Comments</p>}
+              />
             </div>
           </div>
 

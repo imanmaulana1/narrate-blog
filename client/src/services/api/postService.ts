@@ -1,6 +1,11 @@
 import handleApiError from '@/lib/apiErrorHandler';
-import { api } from '@/lib/axiosInstance';
-import { GetPostsParams, PostResponse } from '@/types/api/posts';
+import { api, authApi } from '@/lib/axiosInstance';
+import {
+  GetPostsParams,
+  LikePostResponse,
+  PostDetailResponse,
+  PostResponse,
+} from '@/types/api/posts';
 
 export const getPosts = async ({
   page,
@@ -25,9 +30,20 @@ export const recommendPosts = async (): Promise<PostResponse> => {
   }
 };
 
-export const getDetailPost = async (slug: string): Promise<PostResponse> => {
+export const getDetailPost = async (
+  slug: string
+): Promise<PostDetailResponse> => {
   try {
     return await api.get(`/posts/${slug}`);
+  } catch (error) {
+    const apiError = handleApiError(error);
+    throw apiError;
+  }
+};
+
+export const likePost = async (postId: string): Promise<LikePostResponse> => {
+  try {
+    return await authApi.post(`/posts/${postId}/like`);
   } catch (error) {
     const apiError = handleApiError(error);
     throw apiError;

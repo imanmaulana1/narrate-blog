@@ -25,6 +25,7 @@ export type Post = {
   };
   short_content: string;
   estimated_read_time: string;
+  likes: { user_id: string }[];
 };
 
 export type PostResponseData = {
@@ -39,10 +40,15 @@ export type PostResponseData = {
   };
 };
 
-type PostDetailResponseData = {
+export type PostDetailResponseData = {
   data: Post;
 };
 
 export type PostResponse = ApiResponse<PostResponseData>;
 
 export type PostDetailResponse = ApiResponse<PostDetailResponseData>;
+
+export type LikePostResponse = {
+  success: boolean;
+  message: string;
+};

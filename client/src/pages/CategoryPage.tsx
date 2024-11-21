@@ -12,6 +12,8 @@ const CategoryPage = () => {
 
   const { user } = useAuthUser();
 
+  const categoryPosts = category?.data?.data?.posts || [];
+
   return (
     <section>
       <CategoryHeader category={category} />
@@ -21,7 +23,7 @@ const CategoryPage = () => {
           <PostCardSkeleton key={index} />
         ))}
 
-      {category?.data?.data?.posts?.map((post) => (
+      {categoryPosts.map((post) => (
         <PostCard key={post.id} post={post} user={user} />
       ))}
     </section>
